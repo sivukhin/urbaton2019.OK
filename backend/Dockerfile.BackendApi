@@ -1,0 +1,21 @@
+FROM microsoft/dotnet:2.2-sdk AS build
+WORKDIR /app
+
+COPY *.sln .
+COPY Noname15/CleanCityCore/*.csproj ./CleanCityCore/CleanCityCore.csproj
+COPY Noname15/BackendApi/*.csproj ./BackendApi/BackendApi.csproj
+COPY Noname15/CleanCityTests/*.csproj ./CleanCityTests/CleanCityTests.csproj
+COPY Noname15/EmailSenderDaemon/*.csproj ./EmailSenderDaemon/EmailSenderDaemon.csproj
+RUN dotnet restore
+
+COPY Noname15/CleanCityCore/. ./CleanCityCore
+COPY Noname15/BackendApi/. ./BackendApi
+WORKDIR /app/BackendApi
+RUN dotnet publish -c Release -o out
+
+
+FROM microsoft/dotnet:2.2-sdk AS runtime
+WORKDIR /app
+COPY --from=build /app/BackendApi/out ./
+
+CMD dotnet BackendApi.dll

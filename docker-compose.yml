@@ -1,0 +1,39 @@
+version: '3.2'
+services:
+    db:
+        image: postgres
+        environment:
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_USER=admin
+            - POSTGRES_DB=database
+        volumes:
+            - ./db:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+    pgadmin:
+        image: dpage/pgadmin4
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=admin@mail.com
+            - PGADMIN_DEFAULT_PASSWORD=123
+        ports:
+            - "8080:80"
+        links:
+            - db
+    email-sender:
+        build:
+            context: backend/
+            dockerfile: Dockerfile.EmailSender
+        depends_on:
+            - db
+    backend-api:
+        build:
+            context:  backend/
+            dockerfile: Dockerfile.BackendApi
+        depends_on: 
+            - db
+    db-migration:
+        build:
+            context: backend/
+            dockerfile: Dockerfile.db
+        depends_on:
+            - db
