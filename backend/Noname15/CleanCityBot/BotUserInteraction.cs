@@ -267,7 +267,7 @@ namespace CleanCityBot
             var message = await manager.GetResponseAsync();
             if (message.Text == "/cancel")
             {
-                await manager.SendTextMessageAsync("Действие отменено.\n");
+                await manager.SendTextMessageAsync($"Действие отменено.\n{UserHelp}");
                 throw new Exception("User interrupted session");
             }
 
