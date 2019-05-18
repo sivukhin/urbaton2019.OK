@@ -10,7 +10,7 @@ namespace CleanCityTests
         [Test]
         public void Test()
         {
-            var extender = new MessageExtender().Extend("вывоз снега");
+            var extender = new MessageExtender().Extend("припаркован на газоне и лежит куча мусора");
             foreach (var item in extender)
             {
                 Console.WriteLine(item);
