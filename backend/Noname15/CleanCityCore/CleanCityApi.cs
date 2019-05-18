@@ -129,5 +129,10 @@ namespace CleanCityCore
         {
             return userRepository.GetUser(userId);
         }
+
+        public void AddDoubler(Guid responsibleId, Responsible doubler)
+        {
+            responsibleRepository.AddDoubler(responsibleId, doubler);
+        }
     }
 }

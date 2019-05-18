@@ -14,5 +14,6 @@ namespace CleanCityCore
 
         void AddOrUpdateUser(User user);
         User GetUser(long userId);
+        void AddDoubler(Guid responsibleId, Responsible doubler);
     }
 }

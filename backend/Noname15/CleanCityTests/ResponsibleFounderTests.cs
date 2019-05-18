@@ -27,6 +27,10 @@ namespace CleanCityTests
         {
             return new Responsible[0];
         }
+
+        public void AddDoubler(Guid responsibleId, Responsible doubler)
+        {
+        }
     }
 
     [TestFixture]

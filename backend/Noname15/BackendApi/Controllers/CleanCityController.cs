@@ -16,7 +16,35 @@ namespace BackendApi.Controllers
         {
             this.cleanCityApi = cleanCityApi;
         }
-        
-        
+
+        [HttpGet("report/{reportId}")]
+        public ActionResult<Report> GetReport(Guid reportId)
+        {
+            return cleanCityApi.GetReport(reportId);
+        }
+
+        [HttpGet("reports")]
+        public ActionResult<ReportPreview[]> GetReports(int start = 0, int count = 10)
+        {
+            return cleanCityApi.GetReports(start, count);
+        }
+
+        [HttpGet("reports/{responsibleId}")]
+        public ActionResult<ReportPreview[]> GetReportsOfResponsible(Guid responsibleId, int start = 0, int count = 10)
+        {
+            return cleanCityApi.GetReports(responsibleId, start, count);
+        }
+
+        [HttpGet("responsibles")]
+        public ActionResult<Responsible[]> GetResponsibles(int start = 0, int count = 10)
+        {
+            return cleanCityApi.GetResponsibles(start, count);
+        }
+
+        [HttpPost("add-doubler")]
+        public void AddDoubler(Guid responsibleId, Responsible doubler)
+        {
+            cleanCityApi.AddDoubler(responsibleId, doubler);
+        }
     }
 }

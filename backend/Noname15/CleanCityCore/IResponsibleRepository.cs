@@ -9,5 +9,6 @@ namespace CleanCityCore
         Guid[] ReadResponsibles();
         Guid AddResponsible(Responsible responsible);
         Responsible[] GetDoublers(Guid responsibleId);
+        void AddDoubler(Guid responsibleId, Responsible doubler);
     }
 }

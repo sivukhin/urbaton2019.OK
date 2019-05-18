@@ -68,6 +68,25 @@ namespace CleanCityCore
             }
         }
 
+        public void AddDoubler(Guid responsibleId, Responsible doubler)
+        {
+            using (var context = new CleanCityContext())
+            {
+                var responsible = context.ResponsibleList.SingleOrDefault(x => x.Id == responsibleId);
+                if (responsible == null)
+                    return;
+                var sqlDoubler = new ResponsibleDoublerSql
+                {
+                    Id = Guid.NewGuid(),
+                    Name = doubler.Name,
+                    Email = doubler.Email,
+                    OriginalResponsible = responsible
+                };
+                responsible.DoublerList.Add(sqlDoubler);
+                context.SaveChanges();
+            }
+        }
+
         private Responsible ParseFromSql(ResponsibleSql responsibleSql)
         {
             return new Responsible
