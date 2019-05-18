@@ -7,7 +7,7 @@ namespace CleanCityCore.Sql
     public class ReportSql
     {
         [Key] public Guid Id { get; set; }
-        public NpgsqlDate CreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
         public NpgsqlPoint Location { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }

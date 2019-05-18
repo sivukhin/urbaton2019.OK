@@ -28,12 +28,6 @@ namespace BackendApi.Controllers
             this.messageExtender = messageExtender;
         }
 
-        [HttpPost("send-email")]
-        public void SendEmail(EmailMessage emailMessage)
-        {
-            emailRepository.AddEmail(emailMessage);
-        }
-
         [HttpPost("send-report")]
         public void SendReport(InitialReport report)
         {

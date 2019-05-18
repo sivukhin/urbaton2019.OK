@@ -19,7 +19,7 @@ namespace CleanCityCore
                 {
                     Id = reportId,
                     Body = report.ReportText,
-                    CreationDate = new NpgsqlDate(report.CreationDate),
+                    CreationDate = report.CreationDate,
                     Subject = report.Subject,
                     Location = new NpgsqlPoint(report.Location.Latitude, report.Location.Longitude),
                     ResponsibleId = report.ResponsibleId,
