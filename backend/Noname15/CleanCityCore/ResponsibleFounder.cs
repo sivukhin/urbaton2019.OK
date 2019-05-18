@@ -34,7 +34,7 @@ namespace CleanCityCore
             {
                 {"district_id", districtId.ToString()}
             });
-            Console.WriteLine(districtId);
+            Console.WriteLine($"Processing district: {districtId}");
             var ids = responsibles["data"]["qly"]["list"].ToArray().Select(d => Guid.Parse(d["userId"].ToString()))
                 .ToArray();
             return ids.Select(GetResponsible).ToArray();
@@ -59,6 +59,7 @@ namespace CleanCityCore
 
         private Responsible GetResponsible(Guid responsibleId)
         {
+            Console.WriteLine($"Get responsible with id: {responsibleId}");
             var values = new Dictionary<string, string>
             {
                 {"user_id", responsibleId.ToString()},

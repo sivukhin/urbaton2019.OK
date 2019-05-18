@@ -10,7 +10,7 @@ namespace UpdateResponsibleListDaemon
         {
             var responsibleRepository = new ResponsibleRepository();
             var responsibleFounder = new ResponsibleFounder(responsibleRepository);
-            Console.Out.WriteLine("Email sender started!");
+            Console.Out.WriteLine("UpdateResponsible daemon started!");
             while (true)
             {
                 foreach (var responsible in responsibleFounder.GetAllResponsibles())
