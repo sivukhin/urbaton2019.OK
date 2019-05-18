@@ -33,7 +33,7 @@ namespace CleanCityCore.EmailSender
             var myEmail = "sivukhin.nikita@yandex.ru";
             var email = new MailMessage(emailSenderRequisites.ServerEmail, myEmail);
             email.Subject = $"{message.Subject}";
-            email.Body = $"RealRecipient: {message.RecipientEmail}{Environment.NewLine}{message.Body}";
+            email.Body = message.Body;
             email.IsBodyHtml = true;
             Console.WriteLine($"Found message with {message.Attachments?.Length} attachments");
             foreach (var attachment in message.Attachments ?? new Attachment[0])

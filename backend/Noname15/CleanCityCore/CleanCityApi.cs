@@ -96,7 +96,7 @@ namespace CleanCityCore
                 throw new Exception();
             }
 
-            var reportId = reportRepository.AddReport(new Report
+            var fullReport = new Report
             {
                 UserId = report.UserId,
                 Subject = report.Subject,
@@ -105,12 +105,14 @@ namespace CleanCityCore
                 Attachments = report.Attachments,
                 CreationDate = DateTime.UtcNow,
                 ResponsibleId = responsible.Id,
-            });
+            };
+            var reportId = reportRepository.AddReport(fullReport);
 
+            var user = userRepository.GetUser(report.UserId);
             emailRepository.AddEmail(new EmailMessage
             {
-                Body = messageExtender.ExtendReportText(responsible.Name, report.ReportText),
-                Subject = messageExtender.ExtendSubject(report.Subject),
+                Body = messageExtender.ExtendReportText(responsible, user, fullReport),
+                Subject = messageExtender.ExtendSubject(fullReport),
                 RecipientEmail = responsible.Email,
                 Attachments = report.Attachments,
             });

@@ -54,7 +54,7 @@ namespace CleanCityBot
 
         private async Task Process()
         {
-            var firstResponse = await manager.GetResponseAsync();
+            var firstResponse = await GetResponseAsync();
             if (firstResponse.Text == "/start" || firstResponse.Text == "/help")
             {
                 await ProcessHelp();
@@ -73,11 +73,7 @@ namespace CleanCityBot
 
         private async Task ProcessHelp()
         {
-            await manager.SendTextMessageAsync(
-                "Бот общественный квартальный.\n" +
-                "Сперва вам нужно пройти процесс регистрации с помощью команды /register\n" +
-                "После этого вы сможете создавать обращения квартальным города Екатеринбург с помощью команды /report",
-                new ReplyKeyboardRemove());
+            await manager.SendTextMessageAsync(UserHelp, new ReplyKeyboardRemove());
         }
 
         private async Task ProcessRegistration()
@@ -100,7 +96,7 @@ namespace CleanCityBot
                 await manager.SendTextMessageAsync(
                     $"Ваши реквизиты:\n{PrintUserInformation(user)}\n" +
                     $"{ChangeRequisitesHelp}");
-                var response = (await manager.GetResponseAsync()).Text;
+                var response = (await GetResponseAsync()).Text;
                 if (response == "/done")
                 {
                     cleanCityApi.AddOrUpdateUser(user);
@@ -110,17 +106,17 @@ namespace CleanCityBot
                 else if (response == "/change_name")
                 {
                     await manager.SendTextMessageAsync("Введите новое имя:");
-                    user.Username = (await manager.GetResponseAsync()).Text;
+                    user.Username = (await GetResponseAsync()).Text;
                 }
                 else if (response == "/change_email")
                 {
                     await manager.SendTextMessageAsync("Введите новый email:");
-                    user.Email = (await manager.GetResponseAsync()).Text;
+                    user.Email = (await GetResponseAsync()).Text;
                 }
                 else if (response == "/change_address")
                 {
                     await manager.SendTextMessageAsync("Введите новый адрес:");
-                    user.Address = (await manager.GetResponseAsync()).Text;
+                    user.Address = (await GetResponseAsync()).Text;
                 }
                 else
                 {
@@ -135,21 +131,21 @@ namespace CleanCityBot
             while (string.IsNullOrWhiteSpace(userName))
             {
                 await manager.SendTextMessageAsync("Введите ваши имя и фамилию:");
-                userName = (await manager.GetResponseAsync()).Text;
+                userName = (await GetResponseAsync()).Text;
             }
 
             var address = string.Empty;
             while (string.IsNullOrWhiteSpace(address))
             {
                 await manager.SendTextMessageAsync("Введите ваш адрес:");
-                address = (await manager.GetResponseAsync()).Text;
+                address = (await GetResponseAsync()).Text;
             }
 
             var email = string.Empty;
             while (string.IsNullOrWhiteSpace(email))
             {
                 await manager.SendTextMessageAsync("Введите email, по которому можно будет с вами связаться:");
-                email = (await manager.GetResponseAsync()).Text;
+                email = (await GetResponseAsync()).Text;
             }
 
             var user = new User
@@ -166,6 +162,11 @@ namespace CleanCityBot
                                                "Если хотите исправить имя, воспользуйтесь командой /change_name\n" +
                                                "Если хотите исправить email, воспользуйтесь командой /change_email\n" +
                                                "Если хотите исправить адрес, воспользуйтесь командой /change_address";
+
+        private string UserHelp => "Бот общественный квартальный.\n" +
+                                   "Сперва вам нужно пройти процесс регистрации с помощью команды /register\n" +
+                                   "После этого вы сможете создавать обращения квартальным города Екатеринбург с помощью команды /report\n" +
+                                   "Для отмены воспользуйтесь командой /cancel";
 
         private string PrintUserInformation(User user)
         {
@@ -193,14 +194,14 @@ namespace CleanCityBot
             while (string.IsNullOrWhiteSpace(subject))
             {
                 await manager.SendTextMessageAsync("Введите тему обращения:", markup);
-                subject = (await GetResponse(attachments)).Text;
+                subject = (await GetResponseAsync(attachments)).Text;
             }
 
             var reportText = string.Empty;
             while (string.IsNullOrWhiteSpace(reportText))
             {
                 await manager.SendTextMessageAsync("Подробно опишите детали проблемы:", resetMarkup);
-                reportText = (await GetResponse(attachments)).Text;
+                reportText = (await GetResponseAsync(attachments)).Text;
             }
 
             GeoLocation location = null;
@@ -210,7 +211,7 @@ namespace CleanCityBot
                     "Укажите своё местоположение",
                     new ReplyKeyboardMarkup(
                         KeyboardButton.WithRequestLocation("Отправить моё текущее местоположение")));
-                var locationMessage = await GetResponse(attachments);
+                var locationMessage = await GetResponseAsync(attachments);
                 if (locationMessage.Location != null)
                 {
                     location = new GeoLocation
@@ -229,7 +230,7 @@ namespace CleanCityBot
                     $"Добавьте к своему обращению фотографии, чтобы оно было быстрее решено\n" +
                     $"Мы уже прикрепили к вашему обращению {count} {caption}. Вы можете отправить ещё фотографии или сформировать обращени",
                     makeReport);
-                var message = await GetResponse(attachments);
+                var message = await GetResponseAsync(attachments);
                 if (message.Text != null && message.Text.Contains("обращение"))
                 {
                     break;
@@ -251,13 +252,25 @@ namespace CleanCityBot
             await manager.SendTextMessageAsync(
                 $"Обращение успешно сформировано, мы уведомим соответствующего квартального о проблеме:\n" +
                 $"{responsible.Name}\n" +
-                $"Вы можете оформить ещё одно обращение с помощью команды /report");
+                $"Вы можете оформить ещё одно обращение с помощью команды /report", resetMarkup);
         }
 
-        private async Task<Message> GetResponse(List<Attachment> attachments)
+        private async Task<Message> GetResponseAsync(List<Attachment> attachments)
+        {
+            var message = await GetResponseAsync();
+            TryAddPhoto(attachments, message);
+            return message;
+        }
+
+        private async Task<Message> GetResponseAsync()
         {
             var message = await manager.GetResponseAsync();
-            TryAddPhoto(attachments, message);
+            if (message.Text == "/cancel")
+            {
+                await manager.SendTextMessageAsync("Действие отменено.\n");
+                throw new Exception("User interrupted session");
+            }
+
             return message;
         }
 
