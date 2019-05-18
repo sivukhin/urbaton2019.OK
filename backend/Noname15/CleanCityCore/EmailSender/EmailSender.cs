@@ -34,6 +34,7 @@ namespace CleanCityCore.EmailSender
             var email = new MailMessage(emailSenderRequisites.ServerEmail, myEmail);
             email.Subject = $"{message.Subject}";
             email.Body = $"RealRecipient: {message.RecipientEmail}{Environment.NewLine}{message.Body}";
+            Console.WriteLine($"Found message with {message.Attachments?.Length} attachments");
             foreach (var attachment in message.Attachments ?? new Attachment[0])
             {
                 email.Attachments.Add(new System.Net.Mail.Attachment(

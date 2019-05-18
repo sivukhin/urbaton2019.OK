@@ -28,6 +28,11 @@ namespace CleanCityCore
             this.messageExtender = messageExtender;
         }
 
+        public Responsible GetResponsible(Guid responsibleId)
+        {
+            return responsibleRepository.ReadResponsible(responsibleId);
+        }
+
         public Responsible[] GetResponsibles(int start, int count)
         {
             var responsibleIds = responsibleRepository.ReadResponsibles();

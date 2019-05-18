@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using CleanCityCore.Sql;
 
 namespace CleanCityCore
@@ -29,16 +30,19 @@ namespace CleanCityCore
         {
             using (var context = new CleanCityContext())
             {
-                var responsibleId = Guid.NewGuid();
+                // todo(sivukhin, 18.05.2019): Fix data race here
+                var sqlResponsible = context.ResponsibleList.SingleOrDefault(x => x.Email == responsible.Email);
+                if (sqlResponsible != null)
+                    return sqlResponsible.Id;
                 context.ResponsibleList.Add(new ResponsibleSql
                 {
-                    Id = responsibleId,
+                    Id = responsible.Id,
                     Name = responsible.Name,
                     Email = responsible.Email,
                     IsActive = responsible.IsActive,
                 });
                 context.SaveChanges();
-                return responsibleId;
+                return responsible.Id;
             }
         }
 

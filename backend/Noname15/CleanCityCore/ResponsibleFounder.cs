@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net;
 using System.Net.Http;
 using CleanCityCore.Model;
 using CleanCityCore.Sql;
@@ -11,14 +12,24 @@ namespace CleanCityCore
 {
     public class ResponsibleFounder : IResponsibleFounder
     {
+        private readonly IResponsibleRepository responsibleRepository;
         private string geoLocationApiUri = "https://екатеринбург.рф/data-send/quarterly/searchqlybymap";
         private string fetchApiUri = "https://екатеринбург.рф/data-send/quarterly/qlydata";
         private static readonly HttpClient HttpClient = new HttpClient();
 
+        public ResponsibleFounder(IResponsibleRepository responsibleRepository)
+        {
+            this.responsibleRepository = responsibleRepository;
+        }
+
         public Responsible GetResponsible(GeoLocation location)
         {
             var responsibleId = GetResponsibleId(location);
+            var storedResponsible = responsibleRepository.ReadResponsible(responsibleId);
+            if (storedResponsible != null)
+                return storedResponsible;
             var responsible = GetResponsible(responsibleId);
+            responsibleRepository.AddResponsible(responsible);
             return responsible;
         }
 
