@@ -103,18 +103,22 @@ namespace CleanCityBot
                 if (response == "/done")
                 {
                     cleanCityApi.AddOrUpdateUser(user);
+                    await manager.SendTextMessageAsync("Данные успешно сохранены");
                     break;
                 }
                 else if (response == "/change_name")
                 {
+                    await manager.SendTextMessageAsync("Введите новое имя:");
                     user.Username = (await manager.GetResponseAsync()).Text;
                 }
                 else if (response == "/change_email")
                 {
+                    await manager.SendTextMessageAsync("Введите новый email:");
                     user.Email = (await manager.GetResponseAsync()).Text;
                 }
                 else if (response == "/change_address")
                 {
+                    await manager.SendTextMessageAsync("Введите новый адрес:");
                     user.Address = (await manager.GetResponseAsync()).Text;
                 }
                 else
@@ -221,7 +225,8 @@ namespace CleanCityBot
                 var (count, caption) =
                     Pluralizator.Pluralize(attachments.Count, "фотографий", "фотографию", "фотографии");
                 await manager.SendTextMessageAsync(
-                    $"Мы получили от Вас уже {count} {caption}. Вы можете отправить ещё фотографии или \"Сформировать обращение\"",
+                    $"Добавьте к своему обращению фотографии, чтобы оно было быстрее решено\n" +
+                    $"Мы уже прикрепили к вашему обращению {count} {caption}. Вы можете отправить ещё фотографии или сформировать обращени",
                     makeReport);
                 var message = await GetResponse(attachments);
                 if (message.Text != null && message.Text.Contains("обращение"))
@@ -243,7 +248,8 @@ namespace CleanCityBot
             var responsible = cleanCityApi.GetResponsible(report.ResponsibleId);
             await manager.SendTextMessageAsync(
                 $"Обращение успешно сформировано, мы уведомим соответствующего квартального о проблеме:\n" +
-                $"{responsible.Name}");
+                $"{responsible.Name}\n" +
+                $"Вы можете оформить ещё одно обращение с помощью команды /report");
         }
 
         private async Task<Message> GetResponse(List<Attachment> attachments)
