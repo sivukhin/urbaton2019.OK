@@ -23,12 +23,15 @@ services:
         build:
             context: backend/
             dockerfile: Dockerfile.EmailSender
+
         depends_on:
             - db-migration
     backend-api:
         build:
             context:  backend/
             dockerfile: Dockerfile.BackendApi
+        ports:
+            - "8888:5000"
         depends_on: 
             - db
     db-migration:

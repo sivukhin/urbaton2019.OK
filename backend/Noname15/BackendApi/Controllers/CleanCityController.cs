@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Mail;
 using CleanCityCore;
 using CleanCityCore.EmailSender;
 using CleanCityCore.Model;
