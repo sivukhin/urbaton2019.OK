@@ -1,21 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
-namespace CleanCityCore
+namespace CleanCityCore.MessageExtending
 {
-    public interface IMessageExtender
-    {
-        string Extend(string text);
-    }
-
-    public class ElementMessageDeny
-    {
-        public string Base { get; set; }
-        public string Keywords { get; set; }
-        public int Number { get; set; }
- 
-    }
     public static class ElementMessagesBuilder
     {
         public static List<ElementMessageDeny> BuildList()
@@ -67,39 +53,6 @@ namespace CleanCityCore
                 {new ElementMessageDeny() {Number = 22, Base= "размещение запасов кабеля вне распределительного муфтового шкафа", 
                     Keywords = @"(\w*кабель\w*|\w*провод\w*)" }}
             };
-        }
-    }
-    
-    public class MessageExtender : IMessageExtender
-    {
-        public String Extend(String text)
-        {
-           List<ElementMessageDeny> elemets = ElementMessagesBuilder.BuildList();
-           List<string> returnDeny = new List<string>();
-
-           var returnMsg = "";
-           
-           foreach (var item in elemets)
-           {
-              Regex regex = new Regex(item.Keywords); 
-              MatchCollection matches = regex.Matches(text);
-              if (matches.Count > 0) returnDeny.Add(item.Base);
-           }
-
-           int i = 1;
-           if (returnDeny.Count > 0)
-           {
-               returnMsg +=
-                   ".\\n На основании пункта 7 РЕШЕНИЯ от 26 июня 2012 года N 29/61 Об утверждении правил благоустройства территории муниципального образования город Екатеринбург на территории муниципального образования город Екатеринбург запрещается: \\n";
-               foreach (var item in returnDeny)
-               {
-                   returnMsg += i.ToString() + item + "\\n";
-               }
-           }
-
-           return returnMsg;
-            
-            throw new NotImplementedException();
         }
     }
 }

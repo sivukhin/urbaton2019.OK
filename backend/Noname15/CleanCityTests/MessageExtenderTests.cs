@@ -1,5 +1,6 @@
 using System;
 using CleanCityCore;
+using CleanCityCore.MessageExtending;
 using NUnit.Framework;
 
 namespace CleanCityTests
@@ -10,7 +11,7 @@ namespace CleanCityTests
         [Test]
         public void Test()
         {
-            var extender = new MessageExtender().Extend("припаркован на газоне и лежит куча мусора");
+            var extender = new MessageExtender().ExtendReportText("припаркован на газоне и лежит куча мусора");
             foreach (var item in extender)
             {
                 Console.WriteLine(item);

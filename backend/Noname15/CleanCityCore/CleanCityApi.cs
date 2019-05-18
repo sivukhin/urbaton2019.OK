@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CleanCityCore.EmailSender;
+using CleanCityCore.MessageExtending;
 using CleanCityCore.Model;
+using Newtonsoft.Json;
 
 namespace CleanCityCore
 {
@@ -87,6 +89,7 @@ namespace CleanCityCore
         public Guid SendReport(InitialReport report)
         {
             var responsible = responsibleFounder.GetResponsible(report.Location);
+            Console.WriteLine($"Found responsible: {JsonConvert.SerializeObject(responsible)}");
             if (!responsible.IsActive)
             {
                 // todo(sivukhin, 18.05.2019): Handle inactive responsible case
@@ -105,9 +108,7 @@ namespace CleanCityCore
             });
 
             // todo(sivukhin, 18.05.2019): Use message extender here
-            var messageBody = "Дорбрый день, " + responsible.Name
-                                               + messageExtender.Extend(report.ReportText) + ". \\n Сообщаю: " +
-                                               report.ReportText;
+            var messageBody = messageExtender.ExtendReportText(responsible.Name, report.ReportText);
 
 
             emailRepository.AddEmail(new EmailMessage

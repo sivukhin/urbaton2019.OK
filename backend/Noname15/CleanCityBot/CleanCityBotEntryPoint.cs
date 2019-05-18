@@ -2,6 +2,7 @@
 using System.Threading;
 using CleanCityCore;
 using CleanCityCore.Infra;
+using CleanCityCore.MessageExtending;
 using Microsoft.EntityFrameworkCore.Internal;
 using MihaZupan;
 using Telegram.Bot;

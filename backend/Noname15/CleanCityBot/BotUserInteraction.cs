@@ -8,6 +8,7 @@ using CleanCityCore;
 using CleanCityCore.EmailSender;
 using CleanCityCore.Infra;
 using CleanCityCore.Model;
+using Newtonsoft.Json;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using User = CleanCityCore.Model.User;
@@ -245,6 +246,7 @@ namespace CleanCityBot
             };
             var reportId = cleanCityApi.SendReport(initialReport);
             var report = cleanCityApi.GetReport(reportId);
+            Console.WriteLine($"Report: {JsonConvert.SerializeObject(report)}");
             var responsible = cleanCityApi.GetResponsible(report.ResponsibleId);
             await manager.SendTextMessageAsync(
                 $"Обращение успешно сформировано, мы уведомим соответствующего квартального о проблеме:\n" +
