@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 using CleanCityCore;
 using CleanCityCore.EmailSender;
@@ -13,7 +14,6 @@ namespace CleanCityBot
 {
     public class BotUserInteraction
     {
-        private readonly List<Attachment> attachments;
         private readonly IBotManager manager;
         private readonly ICleanCityApi cleanCityApi;
         private bool isStarted;
@@ -22,7 +22,6 @@ namespace CleanCityBot
         {
             this.manager = manager;
             this.cleanCityApi = cleanCityApi;
-            attachments = new List<Attachment>();
             isStarted = false;
         }
 
@@ -52,8 +51,9 @@ namespace CleanCityBot
 
         private async Task Process()
         {
+            var attachments = new List<Attachment>();
             Console.WriteLine("Run process");
-            await GetResponse();
+            await GetResponse(attachments);
             Console.WriteLine("Get initial response");
             var markup = new ReplyKeyboardMarkup(new[]
             {
@@ -71,14 +71,14 @@ namespace CleanCityBot
             while (string.IsNullOrWhiteSpace(subject))
             {
                 await manager.SendTextMessageAsync("Введите тему обращения:", markup);
-                subject = (await manager.GetResponseAsync()).Text;
+                subject = (await GetResponse(attachments)).Text;
             }
 
             var reportText = string.Empty;
             while (string.IsNullOrWhiteSpace(reportText))
             {
                 await manager.SendTextMessageAsync("Подробно опишите детали проблемы:", resetMarkup);
-                reportText = (await manager.GetResponseAsync()).Text;
+                reportText = (await GetResponse(attachments)).Text;
             }
 
             GeoLocation location = null;
@@ -86,8 +86,9 @@ namespace CleanCityBot
             {
                 await manager.SendTextMessageAsync(
                     "Укажите своё местоположение",
-                    new ReplyKeyboardMarkup(KeyboardButton.WithRequestLocation("Укажите своё местоположение")));
-                var locationMessage = await manager.GetResponseAsync();
+                    new ReplyKeyboardMarkup(
+                        KeyboardButton.WithRequestLocation("Отправить моё текущее местоположение")));
+                var locationMessage = await GetResponse(attachments);
                 if (locationMessage.Location != null)
                 {
                     location = new GeoLocation
@@ -100,34 +101,41 @@ namespace CleanCityBot
 
             while (true)
             {
+                var (count, caption) =
+                    Pluralizator.Pluralize(attachments.Count, "фотографий", "фотографию", "фотографии");
                 await manager.SendTextMessageAsync(
-                    "Сфотографируйте проблему, после чего нажмите кнопку \"Сформировать обращение\"",
+                    $"Мы получили от Вас уже {count} {caption}. Вы можете отправить ещё фотографии или \"Сформировать обращение\"",
                     makeReport);
-                var message = await manager.GetResponseAsync();
+                var message = await GetResponse(attachments);
                 if (message.Text != null && message.Text.Contains("обращение"))
                 {
                     break;
                 }
             }
 
-            var report = new InitialReport
+            var initialReport = new InitialReport
             {
                 Subject = subject,
                 ReportText = reportText,
                 Location = location,
                 Attachments = attachments.ToArray(),
             };
-            cleanCityApi.SendReport(report);
+            var reportId = cleanCityApi.SendReport(initialReport);
+            var report = cleanCityApi.GetReport(reportId);
+            var responsible = cleanCityApi.GetResponsible(report.ResponsibleId);
+            await manager.SendTextMessageAsync(
+                $"Обращение успешно сформировано, мы уведомим соответствующего квартального о проблеме:\n" +
+                $"{responsible.Name}");
         }
 
-        private async Task<Message> GetResponse()
+        private async Task<Message> GetResponse(List<Attachment> attachments)
         {
             var message = await manager.GetResponseAsync();
-            TryAddPhoto(message);
+            TryAddPhoto(attachments, message);
             return message;
         }
 
-        private void TryAddPhoto(Message message)
+        private void TryAddPhoto(List<Attachment> attachments, Message message)
         {
             if (message.Photo == null || !message.Photo.Any())
             {

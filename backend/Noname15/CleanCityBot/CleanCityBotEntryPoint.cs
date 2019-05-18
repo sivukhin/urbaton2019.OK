@@ -22,8 +22,13 @@ namespace CleanCityBot
             );
             proxy.ResolveHostnamesLocally = true;
             var bot = new TelegramBotClient(secretManager.GetSecret("token"), proxy);
-            var cleanCityApi = new CleanCityApi(new EmailRepository(), new ResponsibleFounder(), new ReportRepository(),
-                new ResponsibleRepository(), new MessageExtender());
+            var responsibleRepository = new ResponsibleRepository();
+            var cleanCityApi = new CleanCityApi(
+                new EmailRepository(),
+                new ResponsibleFounder(responsibleRepository),
+                new ReportRepository(),
+                responsibleRepository,
+                new MessageExtender());
             var client = new CleanCityTelegramBot(bot, cleanCityApi);
             client.Start();
             Thread.CurrentThread.Join();
