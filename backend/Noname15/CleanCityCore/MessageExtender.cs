@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CleanCityCore
 {
@@ -38,7 +38,19 @@ namespace CleanCityCore
 
             var messageReturn = "На основании пункта 7 решения от 26 июня 2012 года N 29/61 ОБ УТВЕРЖДЕНИИ ПРАВИЛ БЛАГОУСТРОЙСТВА ТЕРРИТОРИИ МУНИЦИПАЛЬНОГО ОБРАЗОВАНИЯ ГОРОД ЕКАТЕРИНБУРГ На территории муниципального образования город Екатеринбург запрещается: ";
             
+            Regex regex = new Regex(@"\w*" + text + @"\w*");
+            MatchCollection matches;
+           
+            foreach(var item in baseMessageDeny)
+            {
+                matches = regex.Matches(item);
+                if(matches.Count == 1)
+                {
+                    messageReturn += matches[0].Value;
+                }
+            }
 
+            return messageReturn;
             throw new NotImplementedException();
         }
     }
