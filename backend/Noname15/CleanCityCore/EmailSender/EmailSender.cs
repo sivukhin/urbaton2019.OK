@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 
@@ -15,7 +16,6 @@ namespace CleanCityCore.EmailSender
 
         public void SendEmail(EmailMessage message)
         {
-            var email = new MailMessage(emailSenderRequisites.ServerEmail, message.RecipientEmail);
             var client = new SmtpClient
             {
                 DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -28,7 +28,11 @@ namespace CleanCityCore.EmailSender
                     emailSenderRequisites.ServerPassword
                 ),
             };
-            email.Subject = message.Subject;
+
+            // todo(sivukhin, 18.05.2019): pass message.RecipientEmail param instead of myEmail when all project will be ready 
+            var myEmail = "sivukhin.nikita@yandex.ru";
+            var email = new MailMessage(emailSenderRequisites.ServerEmail, myEmail);
+            email.Subject = $"RealRecipient: {message.RecipientEmail}{Environment.NewLine}{message.Subject}";
             email.Body = message.Body;
             foreach (var attachment in message.Attachments ?? new Attachment[0])
             {

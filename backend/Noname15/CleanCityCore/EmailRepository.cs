@@ -16,11 +16,8 @@ namespace CleanCityCore
                 var email = context.Emails.SingleOrDefault(e => e.Id == emailId);
                 if (email == null)
                     return;
-                context.Emails.Update(new EmailMessageSql
-                {
-                    Id = emailId,
-                    IsSent = true
-                });
+                email.IsSent = true;
+                context.Emails.Update(email);
                 context.SaveChanges();
             }
         }

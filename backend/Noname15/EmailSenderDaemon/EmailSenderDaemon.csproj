@@ -6,7 +6,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CleanCityCore\CleanCityCore.csproj" />
+        <ProjectReference Include="..\CleanCityCore\CleanCityCore.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="secret_password.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

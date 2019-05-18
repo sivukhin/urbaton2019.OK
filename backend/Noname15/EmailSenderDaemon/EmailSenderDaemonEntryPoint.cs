@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using CleanCityCore;
 using CleanCityCore.EmailSender;
+using CleanCityCore.Infra;
 
 namespace EmailSenderDaemon
 {
@@ -9,11 +11,12 @@ namespace EmailSenderDaemon
     {
         static void Main(string[] args)
         {
+            var secretManager = new SecretManager();
             var emailSenderRequisites = new EmailSenderRequisites
             {
                 ServerLogin = "cleancity96@yandex.ru",
                 ServerEmail = "cleancity96@yandex.ru",
-                ServerPassword = "password",
+                ServerPassword = secretManager.GetSecret("password"),
                 SmtpHost = "smtp.yandex.ru",
                 SmtpPort = 25,
             };
