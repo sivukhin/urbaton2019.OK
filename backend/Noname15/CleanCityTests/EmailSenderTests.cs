@@ -1,4 +1,5 @@
 using CleanCityCore;
+using CleanCityCore.EmailSender;
 using NUnit.Framework;
 
 namespace CleanCityTests

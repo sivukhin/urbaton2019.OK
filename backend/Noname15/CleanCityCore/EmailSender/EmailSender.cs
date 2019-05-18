@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 
-namespace CleanCityCore
+namespace CleanCityCore.EmailSender
 {
     public class EmailSender : IEmailSender
     {

@@ -1,4 +1,4 @@
-namespace CleanCityCore
+namespace CleanCityCore.EmailSender
 {
     public class Attachment
     {
