@@ -30,7 +30,7 @@ namespace CleanCityCore.EmailSender
             };
             email.Subject = message.Subject;
             email.Body = message.Body;
-            foreach (var attachment in message.Attachments)
+            foreach (var attachment in message.Attachments ?? new Attachment[0])
             {
                 email.Attachments.Add(new System.Net.Mail.Attachment(
                     new MemoryStream(attachment.Data),
