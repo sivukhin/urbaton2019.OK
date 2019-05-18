@@ -1,3 +1,4 @@
+using System.Text;
 using CleanCityCore;
 using CleanCityCore.EmailSender;
 using NUnit.Framework;
@@ -23,6 +24,14 @@ namespace CleanCityTests
                 RecipientEmail = "nikitos7991@yandex.ru",
                 Subject = "Test subject",
                 Body = "Test message",
+                Attachments = new[]
+                {
+                    new Attachment
+                    {
+                        Data = Encoding.UTF8.GetBytes("Hello from attachment"),
+                        Filename = "simple.txt",
+                    }
+                }
             });
         }
     }
