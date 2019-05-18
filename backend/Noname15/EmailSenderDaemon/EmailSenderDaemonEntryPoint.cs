@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using CleanCityCore;
 using CleanCityCore.EmailSender;
@@ -20,6 +21,7 @@ namespace EmailSenderDaemon
                 SmtpHost = "smtp.mailgun.org",
                 SmtpPort = 587,
             };
+            var responsibleRepository = new ResponsibleRepository();
             var emailRepository = new EmailRepository();
             var emailSender = new EmailSender(emailSenderRequisites);
             Console.Out.WriteLine("Email sender started!");
@@ -32,7 +34,13 @@ namespace EmailSenderDaemon
                     try
                     {
                         var email = emailRepository.ReadEmail(emailId);
-                        emailSender.SendEmail(email);
+                        var doublers = responsibleRepository.GetDoublers(email.ResponsibleId);
+                        foreach (var targetEmail in new[] {email.RecipientEmail}.Concat(doublers.Select(x => x.Email)))
+                        {
+                            email.RecipientEmail = targetEmail;
+                            emailSender.SendEmail(email);
+                        }
+
                         emailRepository.SetEmailProcessed(emailId);
                     }
                     catch (Exception e)

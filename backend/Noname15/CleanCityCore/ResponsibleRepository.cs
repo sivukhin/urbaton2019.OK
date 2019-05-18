@@ -47,6 +47,27 @@ namespace CleanCityCore
             }
         }
 
+        public Responsible[] GetDoublers(Guid responsibleId)
+        {
+            using (var context = new CleanCityContext())
+            {
+                var responsible = context.ResponsibleList.SingleOrDefault(x => x.Id == responsibleId);
+                if (responsible == null)
+                    return new Responsible[0];
+                return responsible
+                    .DoublerList
+                    .ToList()
+                    .Select(x => new Responsible
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Email = x.Email,
+                        IsActive = true,
+                    })
+                    .ToArray();
+            }
+        }
+
         private Responsible ParseFromSql(ResponsibleSql responsibleSql)
         {
             return new Responsible

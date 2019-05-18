@@ -8,5 +8,6 @@ namespace CleanCityCore
         Responsible ReadResponsible(Guid responsibleId);
         Guid[] ReadResponsibles();
         Guid AddResponsible(Responsible responsible);
+        Responsible[] GetDoublers(Guid responsibleId);
     }
 }

@@ -22,6 +22,11 @@ namespace CleanCityTests
         {
             return Guid.Empty;
         }
+
+        public Responsible[] GetDoublers(Guid responsibleId)
+        {
+            return new Responsible[0];
+        }
     }
 
     [TestFixture]

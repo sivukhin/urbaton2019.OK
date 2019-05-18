@@ -7,6 +7,7 @@ namespace CleanCityCore
     {
         public DbSet<EmailMessageSql> Emails { get; set; }
         public DbSet<ResponsibleSql> ResponsibleList { get; set; }
+        public DbSet<ResponsibleSql> ResponsibleDoublerList { get; set; }
         public DbSet<ReportSql> Reports { get; set; }
         public DbSet<UserSql> Users { get; set; }
 
@@ -19,6 +20,11 @@ namespace CleanCityCore
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<EmailMessageSql>().HasIndex(x => x.IsSent);
+            modelBuilder.Entity<ResponsibleDoublerSql>()
+                .HasOne(p => p.OriginalResponsible)
+                .WithMany(b => b.DoublerList)
+                .HasForeignKey(p => p.Id)
+                .HasConstraintName("ForeignKey_Doubler_Responsible");
         }
     }
 }
