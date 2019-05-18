@@ -1,7 +1,7 @@
 using CleanCityCore.EmailSender;
 using CleanCityCore.Model;
 
-namespace BackendApi.Controllers
+namespace CleanCityCore
 {
     public class InitialReport
     {
