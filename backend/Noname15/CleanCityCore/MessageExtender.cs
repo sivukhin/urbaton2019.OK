@@ -6,7 +6,7 @@ namespace CleanCityCore
 {
     public interface IMessageExtender
     {
-        List<string> Extend(string text);
+        string Extend(string text);
     }
 
     public class ElementMessageDeny
@@ -72,10 +72,12 @@ namespace CleanCityCore
     
     public class MessageExtender : IMessageExtender
     {
-        public List<String> Extend(String text)
+        public String Extend(String text)
         {
            List<ElementMessageDeny> elemets = ElementMessagesBuilder.BuildList();
            List<string> returnDeny = new List<string>();
+
+           var returnMsg = "";
            
            foreach (var item in elemets)
            {
@@ -84,7 +86,13 @@ namespace CleanCityCore
               if (matches.Count > 0) returnDeny.Add(item.Base);
            }
 
-            return returnDeny;
+           int i = 1;
+           foreach (var item in returnDeny)
+           {
+               returnMsg += i.ToString() + item + "\\n";
+           }
+           
+            return returnMsg;
             
             throw new NotImplementedException();
         }

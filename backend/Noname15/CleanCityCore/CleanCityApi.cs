@@ -101,8 +101,9 @@ namespace CleanCityCore
             });
 
             // todo(sivukhin, 18.05.2019): Use message extender here
-            var messageBody = "Дорбрый день, " +responsible.Name+ "\\n На основании пункта 7 РЕШЕНИЯ от 26 июня 2012 года N 29/61 Об утверждении правил благоустройства территории муниципального образования город Екатеринбург на территории муниципального образования город Екатеринбург запрещается: \\n"
-                    +messageExtender.Extend(report.ReportText)+". \\n Сообщаю: " +report.ReportText.ToLower();
+            var messageBody = "Дорбрый день, " + responsible.Name +
+                              ".\\n На основании пункта 7 РЕШЕНИЯ от 26 июня 2012 года N 29/61 Об утверждении правил благоустройства территории муниципального образования город Екатеринбург на территории муниципального образования город Екатеринбург запрещается: \\n"
+                              + messageExtender.Extend(report.ReportText) + ". \\n Сообщаю: " + report.ReportText;
             
             
             emailRepository.AddEmail(new EmailMessage
