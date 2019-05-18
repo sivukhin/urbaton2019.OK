@@ -50,6 +50,7 @@ namespace CleanCityCore
                 context.Emails.Add(new EmailMessageSql
                 {
                     Id = id,
+                    ResponsibleId = email.ResponsibleId,
                     Data = SerializeEmail(email),
                     IsSent = false,
                 });

@@ -1,3 +1,5 @@
+using System;
+
 namespace CleanCityCore.EmailSender
 {
     public class EmailMessage
@@ -6,5 +8,6 @@ namespace CleanCityCore.EmailSender
         public string Subject { get; set; }
         public string Body { get; set; }
         public Attachment[] Attachments { get; set; }
+        public Guid ResponsibleId { get; set; }
     }
 }

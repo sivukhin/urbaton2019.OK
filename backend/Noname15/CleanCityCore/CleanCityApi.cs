@@ -114,6 +114,7 @@ namespace CleanCityCore
                 Body = messageExtender.ExtendReportText(responsible, user, fullReport),
                 Subject = messageExtender.ExtendSubject(fullReport),
                 RecipientEmail = responsible.Email,
+                ResponsibleId = responsible.Id,
                 Attachments = report.Attachments,
             });
             return reportId;

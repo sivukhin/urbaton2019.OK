@@ -7,6 +7,7 @@ namespace CleanCityCore.Sql
     {
         [Key] 
         public Guid Id { get; set; }
+        public Guid ResponsibleId { get; set; }
         public bool IsSent { get; set; }
         public byte[] Data { get; set; }
     }
