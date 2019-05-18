@@ -19,6 +19,9 @@
       <None Update="secret_token.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="secret_use_proxy.config">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="secret_proxy_pass.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

@@ -12,18 +12,29 @@ namespace CleanCityBot
 {
     class CleanCityBotEntryPoint
     {
+        private static SecretManager secretManager = new SecretManager();
+
+        static TelegramBotClient GetClient(bool useProxy)
+        {
+            if (useProxy)
+            {
+                var proxy = new HttpToSocks5Proxy(
+                    "104.131.65.74",
+                    1080,
+                    "tg",
+                    secretManager.GetSecret("proxy_pass")
+                );
+                proxy.ResolveHostnamesLocally = true;
+                return new TelegramBotClient(secretManager.GetSecret("token"), proxy);
+            }
+
+            return new TelegramBotClient(secretManager.GetSecret("token"));
+        }
+
         static void Main(string[] args)
         {
-            var secretManager = new SecretManager();
-            var proxy = new HttpToSocks5Proxy(
-                "104.131.65.74",
-                1080,
-                "tg",
-                secretManager.GetSecret("proxy_pass")
-            );
-            proxy.ResolveHostnamesLocally = true;
-            var bot = new TelegramBotClient(secretManager.GetSecret("token"), proxy);
             var responsibleRepository = new ResponsibleRepository();
+            var bot = GetClient(secretManager.GetSecret("use_proxy") == "true");
             // todo(sivukhin, 19.05.2019): Add dependency injection container
             var cleanCityApi = new CleanCityApi(
                 new EmailRepository(),
