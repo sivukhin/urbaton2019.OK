@@ -10,5 +10,6 @@ namespace CleanCityBot
         Task<Message> GetResponseAsync();
         Task SendTextMessageAsync(string text, IReplyMarkup replyMarkup = null);
         ITelegramBotClient Bot { get; }
+        long UserId { get; }
     }
 }

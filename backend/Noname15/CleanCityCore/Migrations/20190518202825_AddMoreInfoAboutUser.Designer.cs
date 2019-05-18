@@ -3,6 +3,7 @@ using System;
 using CleanCityCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
@@ -10,9 +11,10 @@ using NpgsqlTypes;
 namespace CleanCityCore.Migrations
 {
     [DbContext(typeof(CleanCityContext))]
-    partial class CleanCityContextModelSnapshot : ModelSnapshot
+    [Migration("20190518202825_AddMoreInfoAboutUser")]
+    partial class AddMoreInfoAboutUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

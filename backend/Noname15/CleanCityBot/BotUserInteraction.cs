@@ -6,9 +6,11 @@ using System.Net.WebSockets;
 using System.Threading.Tasks;
 using CleanCityCore;
 using CleanCityCore.EmailSender;
+using CleanCityCore.Infra;
 using CleanCityCore.Model;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
+using User = CleanCityCore.Model.User;
 
 namespace CleanCityBot
 {
@@ -79,6 +81,51 @@ namespace CleanCityBot
 
         private async Task ProcessRegistration()
         {
+            var currentUser = cleanCityApi.GetUser(manager.UserId);
+            if (currentUser == null)
+            {
+                await ProcessNewUser();
+            }
+            else
+            {
+                await ProcessOldUser(currentUser);
+            }
+        }
+
+        private async Task ProcessOldUser(User user)
+        {
+            while (true)
+            {
+                await manager.SendTextMessageAsync(
+                    $"Ваши реквизиты:\n{PrintUserInformation(user)}\n" +
+                    $"{ChangeRequisitesHelp}");
+                var response = (await manager.GetResponseAsync()).Text;
+                if (response == "/done")
+                {
+                    cleanCityApi.AddOrUpdateUser(user);
+                    break;
+                }
+                else if (response == "/change_name")
+                {
+                    user.Username = (await manager.GetResponseAsync()).Text;
+                }
+                else if (response == "/change_email")
+                {
+                    user.Email = (await manager.GetResponseAsync()).Text;
+                }
+                else if (response == "/change_address")
+                {
+                    user.Address = (await manager.GetResponseAsync()).Text;
+                }
+                else
+                {
+                    await manager.SendTextMessageAsync("Неизвестная команда, попробуйте ещё раз");
+                }
+            }
+        }
+
+        private async Task ProcessNewUser()
+        {
             var userName = string.Empty;
             while (string.IsNullOrWhiteSpace(userName))
             {
@@ -99,6 +146,27 @@ namespace CleanCityBot
                 await manager.SendTextMessageAsync("Введите email, по которому можно будет с вами связаться:");
                 email = (await manager.GetResponseAsync()).Text;
             }
+
+            var user = new User
+            {
+                Email = email,
+                Address = address,
+                Username = userName,
+                UserId = manager.UserId,
+            };
+            await ProcessOldUser(user);
+        }
+
+        private string ChangeRequisitesHelp => "Если все данные введены корректно, воспользуйтесь команой /done\n" +
+                                               "Если хотите исправить имя, воспользуйтесь командой /change_name\n" +
+                                               "Если хотите исправить email, воспользуйтесь командой /change_email\n" +
+                                               "Если хотите исправить адрес, воспользуйтесь командой /change_address";
+
+        private string PrintUserInformation(User user)
+        {
+            return $"Имя: {user.Username}\n" +
+                   $"e-mail: {user.Email}\n" +
+                   $"Адрес: {user.Address}\n";
         }
 
         private async Task ProcessReport()
@@ -164,6 +232,7 @@ namespace CleanCityBot
 
             var initialReport = new InitialReport
             {
+                UserId = manager.UserId,
                 Subject = subject,
                 ReportText = reportText,
                 Location = location,
@@ -194,10 +263,11 @@ namespace CleanCityBot
             var highResolutionPhoto = message.Photo.OrderByDescending(x => x.Width * x.Height).First();
             Console.WriteLine($"Download file: {highResolutionPhoto.FileId}");
             var photo = DownloadFile(highResolutionPhoto.FileId);
+            var photoName = $"attachment_{attachments.Count}.jpg";
             attachments.Add(new Attachment
             {
                 Data = photo,
-                Filename = "attachment.jpg",
+                Filename = photoName,
             });
         }
 

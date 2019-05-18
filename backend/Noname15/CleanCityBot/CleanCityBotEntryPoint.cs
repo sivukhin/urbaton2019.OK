@@ -23,11 +23,13 @@ namespace CleanCityBot
             proxy.ResolveHostnamesLocally = true;
             var bot = new TelegramBotClient(secretManager.GetSecret("token"), proxy);
             var responsibleRepository = new ResponsibleRepository();
+            // todo(sivukhin, 19.05.2019): Add dependency injection container
             var cleanCityApi = new CleanCityApi(
                 new EmailRepository(),
                 new ResponsibleFounder(responsibleRepository),
                 new ReportRepository(),
                 responsibleRepository,
+                new UserRepository(),
                 new MessageExtender());
             var client = new CleanCityTelegramBot(bot, cleanCityApi);
             client.Start();

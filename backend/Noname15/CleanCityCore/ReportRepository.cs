@@ -18,6 +18,7 @@ namespace CleanCityCore
                 context.Reports.Add(new ReportSql
                 {
                     Id = reportId,
+                    UserId = report.UserId,
                     Body = report.ReportText,
                     CreationDate = report.CreationDate,
                     Subject = report.Subject,

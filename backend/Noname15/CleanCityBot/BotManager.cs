@@ -17,7 +17,7 @@ namespace CleanCityBot
         {
             this.bot = bot;
             this.chatId = chatId;
-            this.messageQueue = new AsyncCollection<Message>();
+            messageQueue = new AsyncCollection<Message>();
         }
 
         public async Task<Message> GetResponseAsync()
@@ -38,5 +38,6 @@ namespace CleanCityBot
         }
 
         public ITelegramBotClient Bot => bot;
+        public long UserId => chatId;
     }
 }

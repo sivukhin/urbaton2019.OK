@@ -46,6 +46,7 @@ namespace BackendApi
             services.AddTransient<IResponsibleFounder, ResponsibleFounder>();
             services.AddTransient<IReportRepository, ReportRepository>();
             services.AddTransient<IMessageExtender, MessageExtender>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ICleanCityApi, CleanCityApi>();
         }
 

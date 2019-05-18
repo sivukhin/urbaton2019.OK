@@ -11,5 +11,8 @@ namespace CleanCityCore
         ReportPreview[] GetReports(int start, int count);
         Report GetReport(Guid reportId);
         Guid SendReport(InitialReport report);
+
+        void AddOrUpdateUser(User user);
+        User GetUser(long userId);
     }
 }

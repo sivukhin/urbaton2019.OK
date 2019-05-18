@@ -16,11 +16,7 @@ namespace BackendApi.Controllers
         {
             this.cleanCityApi = cleanCityApi;
         }
-
-        [HttpPost("send-report")]
-        public ActionResult<Guid> SendReport(InitialReport report)
-        {
-            return cleanCityApi.SendReport(report);
-        }
+        
+        
     }
 }

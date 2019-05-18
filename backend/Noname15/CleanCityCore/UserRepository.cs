@@ -10,13 +10,13 @@ namespace CleanCityCore
         {
             using (var context = new CleanCityContext())
             {
-                var sqlUser = context.Users.SingleOrDefault(x => x.ChatId == user.ChatId);
+                var sqlUser = context.Users.SingleOrDefault(x => x.UserId == user.UserId);
                 if (sqlUser == null)
                 {
                     context.Users.Add(new UserSql
                     {
                         Email = user.Email,
-                        ChatId = user.ChatId,
+                        UserId = user.UserId,
                         Address = user.Address,
                         Username = user.Username,
                     });
@@ -37,7 +37,7 @@ namespace CleanCityCore
         {
             using (var context = new CleanCityContext())
             {
-                var sqlUser = context.Users.SingleOrDefault(x => x.ChatId == chatId);
+                var sqlUser = context.Users.SingleOrDefault(x => x.UserId == chatId);
                 if (sqlUser == null)
                     return null;
                 return new User
@@ -45,7 +45,7 @@ namespace CleanCityCore
                     Email = sqlUser.Email,
                     Address = sqlUser.Address,
                     Username = sqlUser.Username,
-                    ChatId = sqlUser.ChatId,
+                    UserId = sqlUser.UserId,
                 };
             }
         }

@@ -12,6 +12,7 @@ namespace CleanCityCore
         private readonly IResponsibleFounder responsibleFounder;
         private readonly IReportRepository reportRepository;
         private readonly IResponsibleRepository responsibleRepository;
+        private readonly IUserRepository userRepository;
         private readonly IMessageExtender messageExtender;
 
         public CleanCityApi(
@@ -19,12 +20,14 @@ namespace CleanCityCore
             IResponsibleFounder responsibleFounder,
             IReportRepository reportRepository,
             IResponsibleRepository responsibleRepository,
+            IUserRepository userRepository,
             IMessageExtender messageExtender)
         {
             this.emailRepository = emailRepository;
             this.responsibleFounder = responsibleFounder;
             this.reportRepository = reportRepository;
             this.responsibleRepository = responsibleRepository;
+            this.userRepository = userRepository;
             this.messageExtender = messageExtender;
         }
 
@@ -92,6 +95,7 @@ namespace CleanCityCore
 
             var reportId = reportRepository.AddReport(new Report
             {
+                UserId = report.UserId,
                 Subject = report.Subject,
                 Location = report.Location,
                 ReportText = report.ReportText,
@@ -102,9 +106,10 @@ namespace CleanCityCore
 
             // todo(sivukhin, 18.05.2019): Use message extender here
             var messageBody = "Дорбрый день, " + responsible.Name
-                              + messageExtender.Extend(report.ReportText) + ". \\n Сообщаю: " + report.ReportText;
-            
-            
+                                               + messageExtender.Extend(report.ReportText) + ". \\n Сообщаю: " +
+                                               report.ReportText;
+
+
             emailRepository.AddEmail(new EmailMessage
             {
                 Body = messageBody,
@@ -113,6 +118,16 @@ namespace CleanCityCore
                 Attachments = report.Attachments,
             });
             return reportId;
+        }
+
+        public void AddOrUpdateUser(User user)
+        {
+            userRepository.AddOrUpdateUser(user);
+        }
+
+        public User GetUser(long userId)
+        {
+            return userRepository.GetUser(userId);
         }
     }
 }
