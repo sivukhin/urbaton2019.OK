@@ -32,7 +32,7 @@ namespace CleanCityCore
             using (var context = new CleanCityContext())
             {
                 // todo(sivukhin, 18.05.2019): Fix data race here
-                var sqlResponsible = context.ResponsibleList.SingleOrDefault(x => x.Email == responsible.Email);
+                var sqlResponsible = context.ResponsibleList.SingleOrDefault(x => x.Id == responsible.Id);
                 if (sqlResponsible != null)
                     return sqlResponsible.Id;
                 context.ResponsibleList.Add(new ResponsibleSql

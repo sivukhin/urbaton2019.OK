@@ -8,7 +8,7 @@ namespace CleanCityCore.Sql
     public class ResponsibleSql
     {
         [Key] public Guid Id { get; set; }
-        [Index(IsUnique = true)] public string Email { get; set; }
+        public string Email { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
     }

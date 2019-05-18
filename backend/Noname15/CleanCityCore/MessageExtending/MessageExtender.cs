@@ -37,9 +37,8 @@ namespace CleanCityCore.MessageExtending
                 }
 
                 returnMsg += "<ol/>";
-                
-                returnMsg += "<br/>Сообщаю: " +
-                    report.ReportText
+
+                returnMsg += "<br/>Сообщаю: " + text;
             }
 
             return returnMsg;
