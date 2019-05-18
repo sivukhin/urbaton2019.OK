@@ -1,11 +1,10 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace CleanCityCore.Sql
+namespace CleanCityCore
 {
-    public class ResponsibleSql
+    public class Responsible
     {
-        [Key] public Guid Id { get; set; }
+        public Guid Id { get; set; }
         public string Email { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }

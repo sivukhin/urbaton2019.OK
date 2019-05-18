@@ -43,6 +43,8 @@ namespace BackendApi
             });
 
             services.AddTransient<IEmailRepository, EmailRepository>();
+            services.AddTransient<IResponsibleFounder, ResponsibleFounder>();
+            services.AddTransient<IReportRepository, ReportRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
