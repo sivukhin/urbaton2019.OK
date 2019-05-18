@@ -40,6 +40,12 @@ services:
             dockerfile: Dockerfile.Bot
         depends_on: 
             - db
+    bot:
+        build:
+            context:  backend/
+            dockerfile: Dockerfile.UpdateResponsible
+        depends_on: 
+            - db
     db-migration:
         build:
             context: backend/
