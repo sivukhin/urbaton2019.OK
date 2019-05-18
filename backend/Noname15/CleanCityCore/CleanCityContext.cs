@@ -17,6 +17,7 @@ namespace CleanCityCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<EmailMessageSql>().HasIndex(x => x.IsSent);
         }
     }
 }

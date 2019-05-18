@@ -19,9 +19,11 @@ namespace EmailSenderDaemon
             };
             var emailRepository = new EmailRepository();
             var emailSender = new EmailSender(emailSenderRequisites);
+            Console.Out.WriteLine("Email sender started!");
             while (true)
             {
                 var unsentEmails = emailRepository.ReadUnsentEmails().Shuffle();
+                Console.Out.WriteLine($"Found {unsentEmails.Length} unsent emails");
                 foreach (var emailId in unsentEmails)
                 {
                     try
@@ -30,7 +32,7 @@ namespace EmailSenderDaemon
                         emailSender.SendEmail(email);
                         emailRepository.SetEmailProcessed(emailId);
                     }
-                    catch (Exception e)    
+                    catch (Exception e)
                     {
                         Console.Error.WriteLine(e);
                     }

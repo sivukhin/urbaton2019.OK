@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.2-sdk AS build
+FROM microsoft/dotnet:2.2-sdk
 WORKDIR /app
 
 COPY Noname15/*.sln .
@@ -9,13 +9,10 @@ COPY Noname15/EmailSenderDaemon/*.csproj ./EmailSenderDaemon/EmailSenderDaemon.c
 RUN dotnet restore
 
 COPY Noname15/CleanCityCore/. ./CleanCityCore
-COPY Noname15/EmailSenderDaemon/. ./EmailSenderDaemon
-WORKDIR /app/EmailSenderDaemon
+WORKDIR /app/CleanCityCore
 RUN dotnet publish -c Release -o out
 
-
-FROM microsoft/dotnet:2.2-sdk AS runtime
 WORKDIR /app
-COPY --from=build /app/EmailSenderDaemon/out ./
 
-CMD dotnet EmailSenderDaemon.dll
+COPY entrypoint.db.sh .
+CMD /bin/bash ./entrypoint.db.sh

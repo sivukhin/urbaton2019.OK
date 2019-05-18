@@ -24,7 +24,7 @@ services:
             context: backend/
             dockerfile: Dockerfile.EmailSender
         depends_on:
-            - db
+            - db-migration
     backend-api:
         build:
             context:  backend/
