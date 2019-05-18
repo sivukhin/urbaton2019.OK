@@ -11,13 +11,13 @@ COPY Noname15/EmailSenderDaemon/*.csproj ./EmailSenderDaemon/EmailSenderDaemon.c
 RUN dotnet restore
 
 COPY Noname15/CleanCityCore/. ./CleanCityCore
-COPY Noname15/EmailSenderDaemon/. ./EmailSenderDaemon
-WORKDIR /app/EmailSenderDaemon
+COPY Noname15/UpdateResponsibleListDaemon/. ./UpdateResponsibleListDaemon
+WORKDIR /app/UpdateResponsibleListDaemon
 RUN dotnet publish -c Release -o out
 
 
 FROM microsoft/dotnet:2.2-sdk AS runtime
 WORKDIR /app
-COPY --from=build /app/EmailSenderDaemon/out ./
+COPY --from=build /app/UpdateResponsibleListDaemon/out ./
 
-CMD dotnet EmailSenderDaemon.dll
+CMD dotnet UpdateResponsibleListDaemon.dll
