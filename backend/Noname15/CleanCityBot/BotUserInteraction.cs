@@ -39,9 +39,16 @@ namespace CleanCityBot
                     {
                         await Process();
                     }
+                    catch (BotCancelOperationException e)
+                    {
+                        Console.WriteLine($"User {manager.UserId} cancel operation");
+                    }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e);
+                        await manager.SendTextMessageAsync(
+                            "Что-то пошло не так. Мы уже разбираемся с проблемой, повторите свой запрос позже.",
+                            resetMarkup);
+                        Console.Error.WriteLine(e);
                         throw;
                     }
                     finally
@@ -168,6 +175,8 @@ namespace CleanCityBot
                                    "После этого вы сможете создавать обращения квартальным города Екатеринбург с помощью команды /report\n" +
                                    "Для отмены воспользуйтесь командой /cancel";
 
+        private IReplyMarkup resetMarkup = new ReplyKeyboardRemove();
+
         private string PrintUserInformation(User user)
         {
             return $"Имя: {user.Username}\n" +
@@ -181,7 +190,7 @@ namespace CleanCityBot
             if (user == null)
             {
                 await manager.SendTextMessageAsync(
-                    "Пройдите процедуру регистрации (/report), чтобы иметь возможность оформлять обращения к городским квартальным");
+                    "Пройдите процедуру регистрации (/register), чтобы иметь возможность оформлять обращения к городским квартальным");
                 return;
             }
 
@@ -196,7 +205,6 @@ namespace CleanCityBot
             {
                 new[] {new KeyboardButton("Сформировать обращение")},
             });
-            var resetMarkup = new ReplyKeyboardRemove();
 
             var subject = string.Empty;
             while (string.IsNullOrWhiteSpace(subject))
@@ -275,8 +283,8 @@ namespace CleanCityBot
             var message = await manager.GetResponseAsync();
             if (message.Text == "/cancel")
             {
-                await manager.SendTextMessageAsync($"Действие отменено.\n{UserHelp}");
-                throw new Exception("User interrupted session");
+                await manager.SendTextMessageAsync($"Действие отменено.\n{UserHelp}", resetMarkup);
+                throw new BotCancelOperationException("User interrupted session");
             }
 
             return message;
