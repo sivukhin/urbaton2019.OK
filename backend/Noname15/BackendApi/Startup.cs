@@ -45,6 +45,7 @@ namespace BackendApi
 
             services.AddTransient<IEmailRepository, EmailRepository>();
             services.AddTransient<IResponsibleFounder, ResponsibleFounder>();
+            services.AddTransient<IResponsibleRepository, ResponsibleRepository>();
             services.AddTransient<IReportRepository, ReportRepository>();
             services.AddTransient<IMessageExtender, MessageExtender>();
             services.AddTransient<IUserRepository, UserRepository>();
