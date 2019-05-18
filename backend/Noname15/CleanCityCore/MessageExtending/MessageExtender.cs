@@ -17,7 +17,7 @@ namespace CleanCityCore.MessageExtending
             List<ElementMessageDeny> elemets = ElementMessagesBuilder.BuildList();
             List<string> returnDeny = new List<string>();
 
-            var returnMsg = "Дорбрый день, " + responsible.Name + "<br/>";
+            var returnMsg = "Добрый день, " + responsible.Name + "<br/>";
 
             foreach (var item in elemets)
             {

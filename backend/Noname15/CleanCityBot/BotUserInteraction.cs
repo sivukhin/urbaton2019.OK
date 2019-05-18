@@ -177,6 +177,14 @@ namespace CleanCityBot
 
         private async Task ProcessReport()
         {
+            var user = cleanCityApi.GetUser(manager.UserId);
+            if (user == null)
+            {
+                await manager.SendTextMessageAsync(
+                    "Пройдите процедуру регистрации (/report), чтобы иметь возможность оформлять обращения к городским квартальным");
+                return;
+            }
+
             var attachments = new List<Attachment>();
             var markup = new ReplyKeyboardMarkup(new[]
             {
