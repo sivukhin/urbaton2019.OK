@@ -87,12 +87,16 @@ namespace CleanCityCore
            }
 
            int i = 1;
-           foreach (var item in returnDeny)
+           if (returnDeny.Count > -1)
            {
-               returnMsg += i.ToString() + item + "\\n";
+               returnMsg +=".\\n На основании пункта 7 РЕШЕНИЯ от 26 июня 2012 года N 29/61 Об утверждении правил благоустройства территории муниципального образования город Екатеринбург на территории муниципального образования город Екатеринбург запрещается: \\n"
+               foreach (var item in returnDeny)
+               {
+                   returnMsg += i.ToString() + item + "\\n";
+               }
            }
-           
-            return returnMsg;
+
+           return returnMsg;
             
             throw new NotImplementedException();
         }
