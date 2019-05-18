@@ -107,14 +107,10 @@ namespace CleanCityCore
                 ResponsibleId = responsible.Id,
             });
 
-            // todo(sivukhin, 18.05.2019): Use message extender here
-            var messageBody = messageExtender.ExtendReportText(responsible.Name, report.ReportText);
-
-
             emailRepository.AddEmail(new EmailMessage
             {
-                Body = messageBody,
-                Subject = report.Subject,
+                Body = messageExtender.ExtendReportText(responsible.Name, report.ReportText),
+                Subject = messageExtender.ExtendSubject(report.Subject),
                 RecipientEmail = responsible.Email,
                 Attachments = report.Attachments,
             });
