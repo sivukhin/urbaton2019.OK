@@ -8,6 +8,7 @@ namespace CleanCityCore
         public DbSet<EmailMessageSql> Emails { get; set; }
         public DbSet<ResponsibleSql> ResponsibleList { get; set; }
         public DbSet<ReportSql> Reports { get; set; }
+        public DbSet<UserSql> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -51,10 +51,59 @@ namespace CleanCityBot
 
         private async Task Process()
         {
+            var firstResponse = await manager.GetResponseAsync();
+            if (firstResponse.Text == "/start" || firstResponse.Text == "/help")
+            {
+                await ProcessHelp();
+            }
+
+            else if (firstResponse.Text == "/register")
+            {
+                await ProcessRegistration();
+            }
+
+            else if (firstResponse.Text == "/report")
+            {
+                await ProcessReport();
+            }
+        }
+
+        private async Task ProcessHelp()
+        {
+            await manager.SendTextMessageAsync(
+                "Бот общественный квартальный.\n" +
+                "Сперва вам нужно пройти процесс регистрации с помощью команды /register\n" +
+                "После этого вы сможете создавать обращения квартальным города Екатеринбург с помощью команды /report",
+                new ReplyKeyboardRemove());
+        }
+
+        private async Task ProcessRegistration()
+        {
+            var userName = string.Empty;
+            while (string.IsNullOrWhiteSpace(userName))
+            {
+                await manager.SendTextMessageAsync("Введите ваши имя и фамилию:");
+                userName = (await manager.GetResponseAsync()).Text;
+            }
+
+            var address = string.Empty;
+            while (string.IsNullOrWhiteSpace(address))
+            {
+                await manager.SendTextMessageAsync("Введите ваш адрес:");
+                address = (await manager.GetResponseAsync()).Text;
+            }
+
+            var email = string.Empty;
+            while (string.IsNullOrWhiteSpace(email))
+            {
+                await manager.SendTextMessageAsync("Введите email, по которому можно будет с вами связаться:");
+                email = (await manager.GetResponseAsync()).Text;
+            }
+        }
+
+        private async Task ProcessReport()
+        {
             var attachments = new List<Attachment>();
-            Console.WriteLine("Run process");
-            await GetResponse(attachments);
-            Console.WriteLine("Get initial response");
             var markup = new ReplyKeyboardMarkup(new[]
             {
                 new[] {new KeyboardButton("Грязь")},
