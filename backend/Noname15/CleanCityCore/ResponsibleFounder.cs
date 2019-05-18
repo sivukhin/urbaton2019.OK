@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Net;
+using System.Linq;
 using System.Net.Http;
 using CleanCityCore.Model;
-using CleanCityCore.Sql;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace CleanCityCore
@@ -15,11 +13,37 @@ namespace CleanCityCore
         private readonly IResponsibleRepository responsibleRepository;
         private string geoLocationApiUri = "https://екатеринбург.рф/data-send/quarterly/searchqlybymap";
         private string fetchApiUri = "https://екатеринбург.рф/data-send/quarterly/qlydata";
+        private string fetchDistrictsUri = "https://екатеринбург.рф/data-send/quarterly/quarterly";
+        private string fetchSingleDistrictUri = "https://екатеринбург.рф/data-send/quarterly/qly2district";
         private static readonly HttpClient HttpClient = new HttpClient();
 
         public ResponsibleFounder(IResponsibleRepository responsibleRepository)
         {
             this.responsibleRepository = responsibleRepository;
+        }
+
+        public Responsible[] GetAllResponsibles()
+        {
+            var districts = GetDistricts();
+            return districts.SelectMany(GetDistrictResponsibles).ToArray();
+        }
+
+        private Responsible[] GetDistrictResponsibles(Guid districtId)
+        {
+            var responsibles = PostData(fetchSingleDistrictUri, new Dictionary<string, string>
+            {
+                {"district_id", districtId.ToString()}
+            });
+            Console.WriteLine(districtId);
+            var ids = responsibles["data"]["qly"]["list"].ToArray().Select(d => Guid.Parse(d["userId"].ToString()))
+                .ToArray();
+            return ids.Select(GetResponsible).ToArray();
+        }
+
+        private Guid[] GetDistricts()
+        {
+            var districts = PostData(fetchDistrictsUri, new Dictionary<string, string>());
+            return districts["data"]["districts"].ToArray().Select(d => Guid.Parse(d["id"].ToString())).ToArray();
         }
 
         public Responsible GetResponsible(GeoLocation location)

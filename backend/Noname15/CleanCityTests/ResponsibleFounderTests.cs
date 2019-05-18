@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using CleanCityCore;
 using CleanCityCore.Model;
 using NUnit.Framework;
@@ -35,6 +36,13 @@ namespace CleanCityTests
                 Longitude = 60.493791
             });
             Console.WriteLine(responsible.Name);
+        }
+
+        [Test]
+        public void TestAll()
+        {
+            var responsibles = new ResponsibleFounder(new FakeResponsibleRepository()).GetAllResponsibles();
+            Console.WriteLine(string.Join(", ", responsibles.Select(x => x.Name)));
         }
     }
 }

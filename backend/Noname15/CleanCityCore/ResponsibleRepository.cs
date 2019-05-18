@@ -50,6 +50,7 @@ namespace CleanCityCore
         {
             return new Responsible
             {
+                Id = responsibleSql.Id,
                 Name = responsibleSql.Name,
                 Email = responsibleSql.Email,
                 IsActive = responsibleSql.IsActive,
