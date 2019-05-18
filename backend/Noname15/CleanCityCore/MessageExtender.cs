@@ -9,7 +9,11 @@ namespace CleanCityCore
         string Extend(string text);
     }
 
-    class MessageExtender : IMessageExtender
+    class MessageDeny
+    {
+        
+    }
+    public class MessageExtender : IMessageExtender
     {
         public String Extend(String text)
         {
