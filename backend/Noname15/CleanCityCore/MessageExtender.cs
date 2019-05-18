@@ -79,7 +79,10 @@ namespace CleanCityCore
 
            foreach (var item in elemets)
            {
-               
+               foreach (var itemKeyword in item.Keywords)
+               {
+                   if (text.IndexOf(itemKeyword) > -1) messageReturn += item.Base;
+               }
            }
             
 
