@@ -32,8 +32,8 @@ namespace CleanCityCore.EmailSender
             // todo(sivukhin, 18.05.2019): pass message.RecipientEmail param instead of myEmail when all project will be ready 
             var myEmail = "sivukhin.nikita@yandex.ru";
             var email = new MailMessage(emailSenderRequisites.ServerEmail, myEmail);
-            email.Subject = $"RealRecipient: {message.RecipientEmail}{Environment.NewLine}{message.Subject}";
-            email.Body = message.Body;
+            email.Subject = $"{message.Subject}";
+            email.Body = $"RealRecipient: {message.RecipientEmail}{Environment.NewLine}{message.Body}";
             foreach (var attachment in message.Attachments ?? new Attachment[0])
             {
                 email.Attachments.Add(new System.Net.Mail.Attachment(

@@ -9,17 +9,18 @@ namespace CleanCityTests
         [Test]
         public void TestSending()
         {
-            var sender = new EmailSender(new EmailSenderRequisites
+            var emailSenderRequisites = new EmailSenderRequisites
             {
-                ServerLogin = "cleancity96@yandex.ru",
+                ServerLogin = "postmaster@sandbox04ced59a05e34ccd8a0ebd92846412d8.mailgun.org",
                 ServerEmail = "cleancity96@yandex.ru",
                 ServerPassword = "password",
-                SmtpHost = "smtp.yandex.ru",
-                SmtpPort = 25,
-            });
+                SmtpHost = "smtp.mailgun.org",
+                SmtpPort = 587,
+            };
+            var sender = new EmailSender(emailSenderRequisites);
             sender.SendEmail(new EmailMessage
             {
-                RecipientEmail = "sivukhin.nikita@yandex.ru",
+                RecipientEmail = "nikitos7991@yandex.ru",
                 Subject = "Test subject",
                 Body = "Test message",
             });

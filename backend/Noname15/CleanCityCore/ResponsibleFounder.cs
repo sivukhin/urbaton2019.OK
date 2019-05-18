@@ -35,6 +35,7 @@ namespace CleanCityCore
                 Name = data["data"]["qly"]["name"].ToString(),
                 Email = data["data"]["qly"]["email"].ToString(),
                 Id = responsibleId,
+                IsActive = true,
             };
         }
 

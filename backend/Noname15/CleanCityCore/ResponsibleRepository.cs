@@ -4,7 +4,7 @@ using CleanCityCore.Sql;
 
 namespace CleanCityCore
 {
-    class ResponsibleRepository : IResponsibleRepository
+    public class ResponsibleRepository : IResponsibleRepository
     {
         public Responsible ReadResponsible(Guid responsibleId)
         {
