@@ -263,7 +263,6 @@ namespace CleanCityBot
             };
             var reportId = cleanCityApi.SendReport(initialReport);
             var report = cleanCityApi.GetReport(reportId);
-            Console.WriteLine($"Report: {JsonConvert.SerializeObject(report)}");
             var responsible = cleanCityApi.GetResponsible(report.ResponsibleId);
             await manager.SendTextMessageAsync(
                 $"Обращение успешно сформировано, мы уведомим соответствующего квартального о проблеме:\n" +
