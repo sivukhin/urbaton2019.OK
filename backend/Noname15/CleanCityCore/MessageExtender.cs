@@ -75,13 +75,13 @@ namespace CleanCityCore
         public String Extend(String text)
         {
            List<ElementMessageDeny> elemets = ElementMessagesBuilder.BuildList();
-           var messageReturn = "На основании пункта 7 решения от 26 июня 2012 года N 29/61 ОБ УТВЕРЖДЕНИИ ПРАВИЛ БЛАГОУСТРОЙСТВА ТЕРРИТОРИИ МУНИЦИПАЛЬНОГО ОБРАЗОВАНИЯ ГОРОД ЕКАТЕРИНБУРГ На территории муниципального образования город Екатеринбург запрещается: ";
-
+           var messageReturnEnd = " пункта 7 решения от 26 июня 2012 года N 29/61 ОБ УТВЕРЖДЕНИИ ПРАВИЛ БЛАГОУСТРОЙСТВА ТЕРРИТОРИИ МУНИЦИПАЛЬНОГО ОБРАЗОВАНИЯ ГОРОД ЕКАТЕРИНБУРГ На территории муниципального образования город Екатеринбург запрещается: ";
+           var messageReturn = "На основании абзаца ";
            foreach (var item in elemets)
            {
                foreach (var itemKeyword in item.Keywords)
                {
-                   if (text.IndexOf(itemKeyword) > -1) messageReturn += item.Base;
+                   if (text.IndexOf(itemKeyword) > -1) messageReturn += item.Number + messageReturnEnd + item.Base;
                }
            }
             
