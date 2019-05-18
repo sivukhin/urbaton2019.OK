@@ -6,7 +6,7 @@ namespace CleanCityCore
 {
     public interface IMessageExtender
     {
-        string Extend(string text);
+        List<string> Extend(string text);
     }
 
     public class ElementMessageDeny
@@ -72,21 +72,22 @@ namespace CleanCityCore
     
     public class MessageExtender : IMessageExtender
     {
-        public String Extend(String text)
+        public List<String> Extend(String text)
         {
            List<ElementMessageDeny> elemets = ElementMessagesBuilder.BuildList();
-           var messageReturnEnd = " пункта 7 решения от 26 июня 2012 года N 29/61 ОБ УТВЕРЖДЕНИИ ПРАВИЛ БЛАГОУСТРОЙСТВА ТЕРРИТОРИИ МУНИЦИПАЛЬНОГО ОБРАЗОВАНИЯ ГОРОД ЕКАТЕРИНБУРГ На территории муниципального образования город Екатеринбург запрещается: ";
-           var messageReturn = "На основании абзаца ";
+           //var messageReturnEnd = " пункта 7 решения от 26 июня 2012 года N 29/61 ОБ УТВЕРЖДЕНИИ ПРАВИЛ БЛАГОУСТРОЙСТВА ТЕРРИТОРИИ МУНИЦИПАЛЬНОГО ОБРАЗОВАНИЯ ГОРОД ЕКАТЕРИНБУРГ На территории муниципального образования город Екатеринбург запрещается: ";
+           //var messageReturn = "На основании абзаца ";
+           List<string> returnDeny = new List<string>();
            foreach (var item in elemets)
            {
                foreach (var itemKeyword in item.Keywords)
                {
-                   if (text.IndexOf(itemKeyword) > -1) messageReturn += item.Number + messageReturnEnd + item.Base;
+                   if (text.IndexOf(itemKeyword) > -1) returnDeny.Add(item.Base);
                }
            }
-            
 
-            return messageReturn;
+            return returnDeny;
+            
             throw new NotImplementedException();
         }
     }
