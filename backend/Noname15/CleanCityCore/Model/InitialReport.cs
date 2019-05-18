@@ -1,7 +1,6 @@
 using CleanCityCore.EmailSender;
-using CleanCityCore.Model;
 
-namespace CleanCityCore
+namespace CleanCityCore.Model
 {
     public class InitialReport
     {

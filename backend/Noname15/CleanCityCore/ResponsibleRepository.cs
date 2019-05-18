@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using CleanCityCore.Model;
 using CleanCityCore.Sql;
 
 namespace CleanCityCore

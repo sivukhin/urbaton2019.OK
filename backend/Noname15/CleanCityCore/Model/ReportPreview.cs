@@ -1,6 +1,6 @@
 using System;
 
-namespace CleanCityCore
+namespace CleanCityCore.Model
 {
     public class ReportPreview
     { 

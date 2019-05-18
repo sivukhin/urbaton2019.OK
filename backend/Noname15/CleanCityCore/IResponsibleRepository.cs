@@ -1,4 +1,5 @@
 using System;
+using CleanCityCore.Model;
 
 namespace CleanCityCore
 {
