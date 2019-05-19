@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using CleanCityCore.Model;
 using CleanCityCore.Sql;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanCityCore
 {
@@ -52,7 +53,9 @@ namespace CleanCityCore
         {
             using (var context = new CleanCityContext())
             {
-                var responsible = context.ResponsibleList.SingleOrDefault(x => x.Id == responsibleId);
+                var responsible = context.ResponsibleList
+                    .Include(x => x.DoublerList)
+                    .SingleOrDefault(x => x.Id == responsibleId);
                 if (responsible == null)
                     return new Responsible[0];
                 var doublers = responsible.DoublerList;
