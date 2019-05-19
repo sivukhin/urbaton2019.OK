@@ -40,7 +40,7 @@ namespace CleanCityCore
                     sqlResponsible.Name = responsible.Name;
                     sqlResponsible.Email = responsible.Email;
                     sqlResponsible.ResponseRegion = responsible.ResponseRegion;
-                    context.ResponsibleList.Update(sqlResponsible);
+                    context.Update(sqlResponsible);
                 }
                 else
                 {
