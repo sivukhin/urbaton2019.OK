@@ -37,6 +37,7 @@ namespace EmailSenderDaemon
                         var doublers = responsibleRepository.GetDoublers(email.ResponsibleId);
                         foreach (var targetEmail in new[] {email.RecipientEmail}.Concat(doublers.Select(x => x.Email)))
                         {
+                            Console.Out.WriteLine($"Send message to recipient: {targetEmail}");
                             email.RecipientEmail = targetEmail;
                             emailSender.SendEmail(email);
                         }
