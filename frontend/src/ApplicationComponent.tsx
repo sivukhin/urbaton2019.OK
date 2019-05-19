@@ -160,6 +160,9 @@ export function MainPageApplicationComponent(props: IMainPageApplicationComponen
     return (
         <Segment>
             <Menu>
+                <Menu.Item>
+                    <img src='https://raw.githubusercontent.com/Umqra/urbaton2019.OK/master/img/logo.png' />
+                </Menu.Item>
                 <Menu.Item
                     name='reports'
                     active={activeItem === 'reports'}
