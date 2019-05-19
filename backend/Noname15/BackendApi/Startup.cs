@@ -58,12 +58,7 @@ namespace BackendApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
             app.UseMvc();
         }
