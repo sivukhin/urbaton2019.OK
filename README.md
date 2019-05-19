@@ -51,4 +51,4 @@
       
        
 Общественный квартальный   
-![logo](img/logo.png){:height="50px" width="50px"}
+![logo](img/logo.png)
