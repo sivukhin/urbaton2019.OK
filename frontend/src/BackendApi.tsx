@@ -12,7 +12,11 @@ export interface IBackendApi {
 
     getResponsibles(start: number, count: number): Promise<IResponsible[]>;
 
+    getResponsible(responsibleId: string): Promise<IResponsible>;
+
     addDoubler(responsibleId: string, doubler: IResponsible): Promise<void>;
+
+    getImageLink(reportId: string, pictureId: number): string;
 }
 
 export default class BackendApi implements IBackendApi {
@@ -54,6 +58,15 @@ export default class BackendApi implements IBackendApi {
 
     public async getResponsibles(start: number, count: number): Promise<IResponsible[]> {
         const result = await this.makeGetRequest(`responsibles?start=${start}&count=${count}`);
+        return result.data;
+    }
+
+    public getImageLink(reportId: string, pictureId: number): string {
+        return `http://${this.serverAddress}/api/report/${reportId}/image/${pictureId}`;
+    }
+
+    public async getResponsible(responsibleId: string): Promise<IResponsible> {
+        const result = await this.makeGetRequest(`responsible/${responsibleId}`);
         return result.data;
     }
 }

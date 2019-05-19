@@ -52,6 +52,12 @@ namespace BackendApi.Controllers
             return cleanCityApi.GetReports(responsibleId, start, count);
         }
 
+        [HttpGet("responsible/{responsibleId}")]
+        public ActionResult<Responsible> GetResponsible(Guid responsibleId)
+        {
+            return cleanCityApi.GetResponsible(responsibleId);
+        }
+
         [HttpGet("responsibles")]
         public ActionResult<Responsible[]> GetResponsibles(int start = 0, int count = 10)
         {

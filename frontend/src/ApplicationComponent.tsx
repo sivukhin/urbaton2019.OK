@@ -1,7 +1,20 @@
 import * as React from "react";
 import {useState, useEffect} from "react";
 import {IBackendApi} from "./BackendApi";
-import {Container, Dimmer, Loader, Segment, Menu, List, Button, Modal, Form, Header} from 'semantic-ui-react'
+import {
+    Grid,
+    Container,
+    Dimmer,
+    Loader,
+    Segment,
+    Menu,
+    List,
+    Button,
+    Modal,
+    Form,
+    Header,
+    Image
+} from 'semantic-ui-react'
 import {IResponsible} from "./IResponsible";
 import {withRouter} from "react-router";
 import {HashRouter as Router, Route, Link, Switch} from "react-router-dom";
@@ -48,7 +61,7 @@ function AddDoublerFormComponent(props: IAddDoublerFormComponentProps) {
     const {responsible, addDoubler} = props;
     return (
         <Form>
-            <Header>Дублирование сообщений квартального {responsible.name}</Header>
+            <Header>Подписка на сообщения {responsible.name}</Header>
             <Form.Field>
                 <label>Ваше имя</label>
                 <input placeholder='Имя Фамилия' value={name} onChange={e => setName(e.target.value)}/>
@@ -82,7 +95,7 @@ function ResponsibleListComponent(props: IApplicationComponentProps) {
         {responsibles.map(r => <List.Item key={r.id}>
             <List.Content floated='right'>
                 <Modal
-                    trigger={<Button>Дублировать сообщения этого квартального</Button>}
+                    trigger={<Button>Подписаться на сообщения</Button>}
                 >
                     <Segment>
                         <AddDoublerFormComponent responsible={r}
@@ -149,11 +162,20 @@ interface IReportComponentProps {
     backendApi: IBackendApi;
 }
 
-function RenderReport(report: IReport) {
+function RenderReport(reportId: string, report: IReport, backendApi: IBackendApi) {
     return (
         <Container textAlign="left" fluid>
             <Header as='h2'>{report.subject}</Header>
             <p>{report.reportText}</p>
+            <Header as='h3'>Приложения</Header>
+            <Image.Group size='small'>
+                {report.attachments.map((a, i) =>
+                    <Image bordered key={i}
+                           as="a"
+                           href={backendApi.getImageLink(reportId, i)}
+                           src={backendApi.getImageLink(reportId, i)}/>
+                )}
+            </Image.Group>
         </Container>
     );
 }
@@ -174,23 +196,28 @@ function ReportComponent(props: IReportComponentProps) {
             <Dimmer active={report == null} inverted>
                 <Loader/>
             </Dimmer>
-            {report != null && RenderReport(report)}
+            {report != null && RenderReport(reportId, report, backendApi)}
         </>
     );
 }
 
 function ApplicationComponentInternal(props: IApplicationComponentProps) {
     return (
-        <Segment>
-            <Router>
-                <Switch>
-                    <Route path="/" exact render={_ => <MainPageApplicationComponent {...props} reportId={null}/>}/>
-                    <Route path="/report/:reportId"
-                           render={routerProps => <MainPageApplicationComponent {...props}
-                                                                                reportId={routerProps.match.params.reportId}/>}/>
-                </Switch>
-            </Router>
-        </Segment>
+        <Grid centered columns={2}>
+            <Grid.Column>
+                <Segment>
+                    <Router>
+                        <Switch>
+                            <Route path="/" exact
+                                   render={_ => <MainPageApplicationComponent {...props} reportId={null}/>}/>
+                            <Route path="/report/:reportId"
+                                   render={routerProps => <MainPageApplicationComponent {...props}
+                                                                                        reportId={routerProps.match.params.reportId}/>}/>
+                        </Switch>
+                    </Router>
+                </Segment>
+            </Grid.Column>
+        </Grid>
     );
 }
 
