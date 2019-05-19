@@ -16,7 +16,7 @@ namespace CleanCityTests
                 ServerEmail = "cleancityekb@gmail.com",
                 ServerPassword = @".L\yW#{^0M#ExONc[p(sP=[#h",
                 SmtpHost = "smtp.gmail.com",
-                SmtpPort = 25,
+                SmtpPort = 587,
             };
             var sender = new EmailSender(emailSenderRequisites);
             sender.SendEmail(new EmailMessage

@@ -19,7 +19,7 @@ namespace EmailSenderDaemon
                 ServerEmail = "cleancityekb@gmail.com",
                 ServerPassword = secretManager.GetSecret("password"),
                 SmtpHost = "smtp.gmail.com",
-                SmtpPort = 25,
+                SmtpPort = 587,
             };
             var responsibleRepository = new ResponsibleRepository();
             var emailRepository = new EmailRepository();
