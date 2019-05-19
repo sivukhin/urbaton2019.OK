@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b0a03034-ec1c-4248-88be-30b57bb37331" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/ApplicationComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ApplicationComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IResponsible.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/IResponsible.tsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -30,8 +31,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ApplicationComponent.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="116" column="93" selection-start-line="116" selection-start-column="93" selection-end-line="116" selection-end-column="93" />
+            <state relative-caret-position="285">
+              <caret line="133" column="74" selection-start-line="133" selection-start-column="74" selection-end-line="133" selection-end-column="74" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -63,8 +64,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/IResponsible.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+            <state relative-caret-position="60">
+              <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -108,6 +109,9 @@
       <find>Дублировать сообщения этого</find>
       <find>Responsible</find>
       <find>AddDoub</find>
+      <find>responsible</find>
+      <find>re</find>
+      <find>Pagination</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -119,8 +123,8 @@
         <option value="$PROJECT_DIR$/src/IGeoLocation.tsx" />
         <option value="$PROJECT_DIR$/src/IReport.tsx" />
         <option value="$PROJECT_DIR$/src/index.tsx" />
-        <option value="$PROJECT_DIR$/src/IResponsible.tsx" />
         <option value="$PROJECT_DIR$/src/BackendApi.tsx" />
+        <option value="$PROJECT_DIR$/src/IResponsible.tsx" />
         <option value="$PROJECT_DIR$/src/ApplicationComponent.tsx" />
       </list>
     </option>
@@ -187,12 +191,12 @@
       <option name="presentableId" value="Default" />
       <updated>1558224610867</updated>
       <workItem from="1558224612282" duration="6134000" />
-      <workItem from="1558235127749" duration="4983000" />
+      <workItem from="1558235127749" duration="5772000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11117000" />
+    <option name="totallyTimeSpent" value="11906000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="27" width="1853" height="1053" extended-state="6" />
@@ -230,13 +234,6 @@
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/IResponsible.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -278,10 +275,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/IResponsible.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ApplicationComponent.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="116" column="93" selection-start-line="116" selection-start-column="93" selection-end-line="116" selection-end-column="93" />
+        <state relative-caret-position="285">
+          <caret line="133" column="74" selection-start-line="133" selection-start-column="74" selection-end-line="133" selection-end-column="74" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>

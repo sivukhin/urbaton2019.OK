@@ -4,8 +4,6 @@ import {IBackendApi} from "./BackendApi";
 import {
     Grid,
     Container,
-    Dimmer,
-    Loader,
     Segment,
     Menu,
     List,
@@ -14,6 +12,7 @@ import {
     Form,
     Header,
     Image,
+    Icon,
     Pagination
 } from 'semantic-ui-react'
 import {IResponsible} from "./IResponsible";
@@ -75,6 +74,7 @@ function AddDoublerFormComponent(props: IAddDoublerFormComponentProps) {
                 email: email,
                 name: name,
                 id: null,
+                responseRegion: null
             })}>Подписаться на сообщения квартального</Button>
         </Form>
     );
@@ -122,20 +122,25 @@ function ResponsibleListComponent(props: IApplicationComponentProps) {
                         <List.Icon name='users'/>
                         <List.Content>
                             <List.Header>{r.name}</List.Header>
-                            <List.Description>{r.email}</List.Description>
+                            <List.Description>{r.email} ({r.responseRegion})</List.Description>
                         </List.Content>
                     </List.Item>);
                 })}
             </List>
-            <Pagination totalPages={100} activePage={page} firstItem={null} siblingRange={1}
+            <Pagination totalPages={100} activePage={page}
+                        firstItem={null}
+                        lastItem={null}
+                        prevItem={{content: <Icon name='angle double left'/>, icon: true}}
+                        nextItem={{content: <Icon name='angle double right'/>, icon: true}}
+                        siblingRange={1}
                         boundaryRange={0}
-                        lastItem={null} onPageChange={(e, data) => {
-                if (page < data.activePage && responsibles.length < 10) {
-                    return;
-                }
-                // @ts-ignore
-                setPage(data.activePage)
-            }}/>
+                        onPageChange={(e, data) => {
+                            if (page < data.activePage && responsibles.length < 10) {
+                                return;
+                            }
+                            // @ts-ignore
+                            setPage(data.activePage)
+                        }}/>
         </>);
 }
 
