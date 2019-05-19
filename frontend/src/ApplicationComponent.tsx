@@ -1,0 +1,198 @@
+import * as React from "react";
+import {useState, useEffect} from "react";
+import {IBackendApi} from "./BackendApi";
+import {Container, Dimmer, Loader, Segment, Menu, List, Button, Modal, Form, Header} from 'semantic-ui-react'
+import {IResponsible} from "./IResponsible";
+import {withRouter} from "react-router";
+import {HashRouter as Router, Route, Link, Switch} from "react-router-dom";
+import {IReport} from "./IReport";
+
+
+interface IApplicationComponentProps {
+    backendApi: IBackendApi;
+}
+
+function ReportListComponent(props: IApplicationComponentProps) {
+    const [reports, setReports] = useState([]);
+    useEffect(() => {
+        async function loadAsync() {
+            const {backendApi} = props;
+            const reports = await backendApi.getReports(0, 10);
+            setReports(reports);
+        }
+
+        loadAsync();
+    }, []);
+    const {backendApi} = props;
+    return (
+        <List divided>
+            {reports.map(r => <List.Item key={r.id} as={Link} to={`/report/${r.id}`}>
+                <List.Icon name='content'/>
+                <List.Content>
+                    <List.Header>{r.subject}</List.Header>
+                    <List.Description>{r.reportText}</List.Description>
+                </List.Content>
+            </List.Item>)}
+        </List>
+    );
+}
+
+interface IAddDoublerFormComponentProps {
+    responsible: IResponsible;
+    addDoubler: (responsible: IResponsible) => Promise<void>;
+}
+
+function AddDoublerFormComponent(props: IAddDoublerFormComponentProps) {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const {responsible, addDoubler} = props;
+    return (
+        <Form>
+            <Header>Дублирование сообщений квартального {responsible.name}</Header>
+            <Form.Field>
+                <label>Ваше имя</label>
+                <input placeholder='Имя Фамилия' value={name} onChange={e => setName(e.target.value)}/>
+            </Form.Field>
+            <Form.Field>
+                <label>Email</label>
+                <input placeholder='mail@domain.com' value={email} onChange={e => setEmail(e.target.value)}/>
+            </Form.Field>
+            <Button onClick={() => addDoubler({
+                email: email,
+                name: name,
+                id: null,
+            })}>Подписаться на сообщения квартального</Button>
+        </Form>
+    );
+}
+
+function ResponsibleListComponent(props: IApplicationComponentProps) {
+    const [responsibles, setResponsibles] = useState([]);
+    useEffect(() => {
+        async function loadAsync() {
+            const {backendApi} = props;
+            const responsibles = await backendApi.getResponsibles(0, 10);
+            setResponsibles(responsibles);
+        }
+
+        loadAsync();
+    }, []);
+    const {backendApi} = props;
+    return (<List divided>
+        {responsibles.map(r => <List.Item key={r.id}>
+            <List.Content floated='right'>
+                <Modal
+                    trigger={<Button>Дублировать сообщения этого квартального</Button>}
+                >
+                    <Segment>
+                        <AddDoublerFormComponent responsible={r}
+                                                 addDoubler={doubler => backendApi.addDoubler(r.id, doubler)}/>
+                    </Segment>
+                </Modal>
+            </List.Content>
+            <List.Icon name='users'/>
+            <List.Content>
+                <List.Header>{r.name}</List.Header>
+                <List.Description>{r.email}</List.Description>
+            </List.Content>
+        </List.Item>)}
+    </List>);
+}
+
+interface IMainPageApplicationComponentProps {
+    backendApi: IBackendApi;
+    reportId: string;
+}
+
+export function MainPageApplicationComponent(props: IMainPageApplicationComponentProps) {
+    const {reportId} = props;
+    const [activeItem, setActiveItem] = useState(reportId == null ? "reports" : "report");
+    useEffect(() => {
+        if (reportId != null) {
+            setActiveItem("report");
+        }
+    }, [reportId]);
+    return (
+        <Segment>
+            <Menu>
+                <Menu.Item
+                    name='reports'
+                    active={activeItem === 'reports'}
+                    onClick={() => setActiveItem("reports")}
+                >
+                    Список обращений
+                </Menu.Item>
+                <Menu.Item
+                    name='responsibles'
+                    active={activeItem === 'responsibles'}
+                    onClick={() => setActiveItem("responsibles")}
+                >
+                    Список квартальных города Екатеринбург
+                </Menu.Item>
+                {reportId != null && <Menu.Item
+                    name='report'
+                    active={activeItem === 'report'}
+                    onClick={() => setActiveItem("report")}
+                >
+                    Обращение
+                </Menu.Item>}
+            </Menu>
+            {activeItem == "reports" && <ReportListComponent {...props}/>}
+            {activeItem == "responsibles" && <ResponsibleListComponent {...props}/>}
+            {activeItem == "report" && <ReportComponent {...props}/>}
+        </Segment>
+    );
+}
+
+interface IReportComponentProps {
+    reportId: string;
+    backendApi: IBackendApi;
+}
+
+function RenderReport(report: IReport) {
+    return (
+        <Container textAlign="left" fluid>
+            <Header as='h2'>{report.subject}</Header>
+            <p>{report.reportText}</p>
+        </Container>
+    );
+}
+
+function ReportComponent(props: IReportComponentProps) {
+    const [report, setReport] = useState(null);
+    const {backendApi, reportId} = props;
+    useEffect(() => {
+        async function loadAsync() {
+            const report = await backendApi.getReport(reportId);
+            setReport(report);
+        }
+
+        loadAsync();
+    }, [reportId]);
+    return (
+        <>
+            <Dimmer active={report == null} inverted>
+                <Loader/>
+            </Dimmer>
+            {report != null && RenderReport(report)}
+        </>
+    );
+}
+
+function ApplicationComponentInternal(props: IApplicationComponentProps) {
+    return (
+        <Segment>
+            <Router>
+                <Switch>
+                    <Route path="/" exact render={_ => <MainPageApplicationComponent {...props} reportId={null}/>}/>
+                    <Route path="/report/:reportId"
+                           render={routerProps => <MainPageApplicationComponent {...props}
+                                                                                reportId={routerProps.match.params.reportId}/>}/>
+                </Switch>
+            </Router>
+        </Segment>
+    );
+}
+
+// @ts-ignore
+export const ApplicationComponent = withRouter(ApplicationComponentInternal);
