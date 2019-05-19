@@ -51,39 +51,52 @@ function ReportListComponent(props: IApplicationComponentProps) {
 }
 
 interface IAddDoublerFormComponentProps {
-    responsible: IResponsible;
-    addDoubler: (responsible: IResponsible) => Promise<void>;
+    responsibleName: string;
+    responsibleId: string;
+    addDoubler: (responsible: IResponsible, responsibleId: string) => Promise<void>;
 }
 
 function AddDoublerFormComponent(props: IAddDoublerFormComponentProps) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const {responsible, addDoubler} = props;
+    const {responsibleId, responsibleName, addDoubler} = props;
+    const [openModal, setOpenModal] = useState(false);
     return (
-        <Form>
-            <Header>Подписка на сообщения {responsible.name}</Header>
-            <Form.Field>
-                <label>Ваше имя</label>
-                <input placeholder='Имя Фамилия' value={name} onChange={e => setName(e.target.value)}/>
-            </Form.Field>
-            <Form.Field>
-                <label>Email</label>
-                <input placeholder='mail@domain.com' value={email} onChange={e => setEmail(e.target.value)}/>
-            </Form.Field>
-            <Button onClick={() => addDoubler({
-                email: email,
-                name: name,
-                id: null,
-                responseRegion: null
-            })}>Подписаться на сообщения квартального</Button>
-        </Form>
+        <Modal
+            open={openModal}
+            onClose={() => setOpenModal(false)}
+            trigger={<Button onClick={() => setOpenModal(true)}>Подписаться на сообщения</Button>}
+        >
+            <Segment>
+                <Form>
+                    <Header>Подписка на сообщения {responsibleName}</Header>
+                    <Form.Field>
+                        <label>Ваше имя</label>
+                        <input placeholder='Имя Фамилия' value={name} onChange={e => setName(e.target.value)}/>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Email</label>
+                        <input placeholder='mail@domain.com' value={email} onChange={e => setEmail(e.target.value)}/>
+                    </Form.Field>
+                    <Button onClick={async () => {
+                        setOpenModal(false);
+                        await addDoubler({
+                            email: email,
+                            name: name,
+                            id: null,
+                            responseRegion: null
+                        }, responsibleId)
+                    }}>Подписаться на сообщения квартального</Button>
+                </Form>
+            </Segment>
+        </Modal>
+
     );
 }
 
 function ResponsibleListComponent(props: IApplicationComponentProps) {
     const [responsibles, setResponsibles] = useState([]);
     const [page, setPage] = useState(1);
-    const [openModal, setOpenModal] = useState(false);
     useEffect(() => {
         async function loadAsync() {
             const {backendApi} = props;
@@ -101,23 +114,15 @@ function ResponsibleListComponent(props: IApplicationComponentProps) {
     return (
         <>
             <List divided>
-                {responsibles.map(r => {
-                    var id = r.id;
-                    return (<List.Item key={id}>
+                {responsibles.map((r, i) => {
+                    return (<List.Item key={i}>
                         <List.Content floated='right'>
-                            <Modal
-                                open={openModal}
-                                onClose={() => setOpenModal(false)}
-                                trigger={<Button onClick={() => setOpenModal(true)}>Подписаться на сообщения</Button>}
-                            >
-                                <Segment>
-                                    <AddDoublerFormComponent responsible={r}
-                                                             addDoubler={async doubler => {
-                                                                 setOpenModal(false);
-                                                                 await backendApi.addDoubler(id, doubler);
-                                                             }}/>
-                                </Segment>
-                            </Modal>
+
+                            <AddDoublerFormComponent responsibleId={r.id}
+                                                     responsibleName={r.name}
+                                                     addDoubler={async (doubler, responsibleId) => {
+                                                         await backendApi.addDoubler(responsibleId, doubler);
+                                                     }}/>
                         </List.Content>
                         <List.Icon name='users'/>
                         <List.Content>
