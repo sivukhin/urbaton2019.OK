@@ -162,30 +162,56 @@ interface IReportComponentProps {
     backendApi: IBackendApi;
 }
 
-function RenderReport(reportId: string, report: IReport, backendApi: IBackendApi) {
-    return (
-        <Container textAlign="left" fluid>
-            <Header as='h2'>{report.subject}</Header>
-            <p>{report.reportText}</p>
-            <Header as='h3'>Приложения</Header>
-            <Image.Group size='small'>
-                {report.attachments.map((a, i) =>
+function RenderAttachments(attachments: any[], reportId: string, backendApi: IBackendApi) {
+    if (attachments.length == 0)
+        return null;
+    return (<>
+        <Header as='h3'>Приложения</Header>
+        <Image.Group size='small'>
+            {
+                attachments.map((a, i) =>
                     <Image bordered key={i}
                            as="a"
                            href={backendApi.getImageLink(reportId, i)}
                            src={backendApi.getImageLink(reportId, i)}/>
-                )}
-            </Image.Group>
+                )
+            }
+        </Image.Group>
+    </>);
+}
+
+function RenderReport(reportId: string, report: IReport, responsible: IResponsible, backendApi: IBackendApi) {
+    return (
+        <Container textAlign="left" fluid>
+            <Header as='h2'>{report.subject}</Header>
+            <p>
+                Квартальный, ответственный за обращение: <b>{responsible.name}</b>
+            </p>
+            <Header as='h3'>Текст обращения</Header>
+            <p>{report.reportText}</p>
+            <Header as='h3'>Местоположение</Header>
+            <p>
+                <a href={`https://yandex.ru/maps/?ll=${report.location.longitude}%2C${report.location.latitude}&` +
+                "mode=whatshere&" +
+                "whatshere%5Bpoint%5D=60.494202%2C56.809559&" +
+                "whatshere%5Bzoom%5D=10&z=14"}>
+                    Ссылка на Яндекс.Карты
+                </a>
+            </p>
+            {RenderAttachments(report.attachments, reportId, backendApi)}
         </Container>
     );
 }
 
 function ReportComponent(props: IReportComponentProps) {
     const [report, setReport] = useState(null);
+    const [responsible, setResponsible] = useState(null);
     const {backendApi, reportId} = props;
     useEffect(() => {
         async function loadAsync() {
             const report = await backendApi.getReport(reportId);
+            const responsible = await backendApi.getResponsible(report.responsibleId);
+            setResponsible(responsible);
             setReport(report);
         }
 
@@ -196,7 +222,7 @@ function ReportComponent(props: IReportComponentProps) {
             <Dimmer active={report == null} inverted>
                 <Loader/>
             </Dimmer>
-            {report != null && RenderReport(reportId, report, backendApi)}
+            {report != null && responsible != null && RenderReport(reportId, report, responsible, backendApi)}
         </>
     );
 }
