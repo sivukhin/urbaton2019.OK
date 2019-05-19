@@ -218,7 +218,9 @@ function RenderAttachments(attachments: any[], reportId: string, backendApi: IBa
 
 function RenderReport(reportId: string, report: IReport, responsible: IResponsible, backendApi:
     IBackendApi) {
-    const chunks = report.reportText.split("[DELIM]").filter(x => x.trim().length == 0);
+    const chunks = report.reportText.split("[DELIM]").filter(x => x.trim().length != 0);
+    console.log(chunks);
+    console.log(report.reportText);
     return (
         <Container textAlign="left" fluid>
             <Header as='h2'>{report.subject}</Header>
@@ -226,7 +228,7 @@ function RenderReport(reportId: string, report: IReport, responsible: IResponsib
                 Квартальный, ответственный за обращение: <b>{responsible.name}</b>
             </p>
             <Header as='h3'>Текст обращения</Header>
-            {chunks.map(chunk => <p>{chunk}</p>)}
+            {chunks.map((chunk, i) => <p key={i}>{chunk}</p>)}
             <Header as='h3'>Местоположение</Header>
             <p>
                 <a href={`https://yandex.ru/maps/?ll=${report.location.longitude}%2C${report.location.latitude}&` +

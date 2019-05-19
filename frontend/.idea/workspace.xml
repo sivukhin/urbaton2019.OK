@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b0a03034-ec1c-4248-88be-30b57bb37331" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../backend/Noname15/CleanCityCore/MessageExtending/MessageExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Noname15/CleanCityCore/MessageExtending/MessageExtender.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ApplicationComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ApplicationComponent.tsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -31,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ApplicationComponent.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="228" column="49" lean-forward="true" selection-start-line="228" selection-start-column="49" selection-end-line="228" selection-end-column="49" />
+            <state relative-caret-position="467">
+              <caret line="230" column="34" selection-start-line="230" selection-start-column="34" selection-end-line="230" selection-end-column="34" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -194,12 +193,12 @@
       <option name="presentableId" value="Default" />
       <updated>1558224610867</updated>
       <workItem from="1558224612282" duration="6134000" />
-      <workItem from="1558235127749" duration="8583000" />
+      <workItem from="1558235127749" duration="8796000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14717000" />
+    <option name="totallyTimeSpent" value="14930000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="27" width="1853" height="1053" extended-state="6" />
@@ -287,8 +286,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ApplicationComponent.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="228" column="49" lean-forward="true" selection-start-line="228" selection-start-column="49" selection-end-line="228" selection-end-column="49" />
+        <state relative-caret-position="467">
+          <caret line="230" column="34" selection-start-line="230" selection-start-column="34" selection-end-line="230" selection-end-column="34" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
