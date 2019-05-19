@@ -43,6 +43,7 @@ namespace CleanCityCore.EmailSender
                 );
             }
 
+            Console.WriteLine($"Ready to send email!");
             client.Send(email);
         }
     }

@@ -21,7 +21,7 @@ namespace CleanCityTests
             var sender = new EmailSender(emailSenderRequisites);
             sender.SendEmail(new EmailMessage
             {
-                RecipientEmail = "nikitos7991@yandex.ru",
+                RecipientEmail = "sivukhin.nikita@yandex.ru",
                 Subject = "Test subject",
                 Body = "Test message",
                 Attachments = new[]
