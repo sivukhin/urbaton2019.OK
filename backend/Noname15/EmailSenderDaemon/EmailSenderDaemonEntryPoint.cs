@@ -42,9 +42,9 @@ namespace EmailSenderDaemon
                             Console.Out.WriteLine($"Send message to recipient: {targetEmail}");
                             email.RecipientEmail = targetEmail;
                             emailSender.SendEmail(email);
+                            emailRepository.SetEmailProcessed(emailId);
                         }
 
-                        emailRepository.SetEmailProcessed(emailId);
                     }
                     catch (Exception e)
                     {
