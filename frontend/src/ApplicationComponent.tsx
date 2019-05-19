@@ -161,7 +161,7 @@ export function MainPageApplicationComponent(props: IMainPageApplicationComponen
         <Segment>
             <Menu>
                 <Menu.Item>
-                    <img src='https://raw.githubusercontent.com/Umqra/urbaton2019.OK/master/img/logo.png' />
+                    <img src='https://raw.githubusercontent.com/Umqra/urbaton2019.OK/master/img/logo.png'/>
                 </Menu.Item>
                 <Menu.Item
                     name='reports'
@@ -218,6 +218,7 @@ function RenderAttachments(attachments: any[], reportId: string, backendApi: IBa
 
 function RenderReport(reportId: string, report: IReport, responsible: IResponsible, backendApi:
     IBackendApi) {
+    const chunks = report.reportText.split("[DELIM]").filter(x => x.trim().length == 0);
     return (
         <Container textAlign="left" fluid>
             <Header as='h2'>{report.subject}</Header>
@@ -225,7 +226,7 @@ function RenderReport(reportId: string, report: IReport, responsible: IResponsib
                 Квартальный, ответственный за обращение: <b>{responsible.name}</b>
             </p>
             <Header as='h3'>Текст обращения</Header>
-            <p>{report.reportText}</p>
+            {chunks.map(chunk => <p>{chunk}</p>)}
             <Header as='h3'>Местоположение</Header>
             <p>
                 <a href={`https://yandex.ru/maps/?ll=${report.location.longitude}%2C${report.location.latitude}&` +
