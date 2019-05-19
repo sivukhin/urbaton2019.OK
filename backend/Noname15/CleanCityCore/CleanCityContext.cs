@@ -23,7 +23,7 @@ namespace CleanCityCore
             modelBuilder.Entity<ResponsibleDoublerSql>()
                 .HasOne(p => p.OriginalResponsible)
                 .WithMany(b => b.DoublerList)
-                .HasForeignKey(p => p.Id)
+                .HasForeignKey(p => p.OriginalId)
                 .HasConstraintName("ForeignKey_Doubler_Responsible");
         }
     }
