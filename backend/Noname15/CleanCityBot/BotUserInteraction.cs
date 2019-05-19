@@ -197,9 +197,10 @@ namespace CleanCityBot
             var attachments = new List<Attachment>();
             var markup = new ReplyKeyboardMarkup(new[]
             {
-                new[] {new KeyboardButton("Грязь")},
-                new[] {new KeyboardButton("Парковка")},
-                new[] {new KeyboardButton("Ещё что-то")}
+                new[] {new KeyboardButton("Грязь на тротуаре")},
+                new[] {new KeyboardButton("Парковка в неположенном месте")},
+                new[] {new KeyboardButton("Реклама в неположенном месте")},
+                new[] {new KeyboardButton("Складированое в неположенном месте")},
             });
             var makeReport = new ReplyKeyboardMarkup(new[]
             {
@@ -209,7 +210,8 @@ namespace CleanCityBot
             var subject = string.Empty;
             while (string.IsNullOrWhiteSpace(subject))
             {
-                await manager.SendTextMessageAsync("Введите тему обращения:", markup);
+                await manager.SendTextMessageAsync("Выберите одну из предложенных тем обращения или введите свою:",
+                    markup);
                 subject = (await GetResponseAsync(attachments)).Text;
             }
 
