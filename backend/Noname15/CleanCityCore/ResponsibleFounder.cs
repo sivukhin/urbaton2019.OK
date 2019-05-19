@@ -66,10 +66,12 @@ namespace CleanCityCore
                 {"page", "1"}
             };
             var data = PostData(fetchApiUri, values);
+            Console.WriteLine(data);
             return new Responsible
             {
                 Name = data["data"]["qly"]["name"].ToString(),
                 Email = data["data"]["qly"]["email"].ToString(),
+                ResponseRegion = $"{data["data"]["qly"]["districtTitle"]}, {data["data"]["qly"]["quarterTitle"]}",
                 Id = responsibleId,
                 IsActive = true,
             };

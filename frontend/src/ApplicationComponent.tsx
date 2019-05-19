@@ -101,28 +101,31 @@ function ResponsibleListComponent(props: IApplicationComponentProps) {
     return (
         <>
             <List divided>
-                {responsibles.map(r => <List.Item key={r.id}>
-                    <List.Content floated='right'>
-                        <Modal
-                            open={openModal}
-                            onClose={() => setOpenModal(false)}
-                            trigger={<Button onClick={() => setOpenModal(true)}>Подписаться на сообщения</Button>}
-                        >
-                            <Segment>
-                                <AddDoublerFormComponent responsible={r}
-                                                         addDoubler={async doubler => {
-                                                             setOpenModal(false);
-                                                             await backendApi.addDoubler(r.id, doubler);
-                                                         }}/>
-                            </Segment>
-                        </Modal>
-                    </List.Content>
-                    <List.Icon name='users'/>
-                    <List.Content>
-                        <List.Header>{r.name}</List.Header>
-                        <List.Description>{r.email}</List.Description>
-                    </List.Content>
-                </List.Item>)}
+                {responsibles.map(r => {
+                    var id = r.id;
+                    return (<List.Item key={id}>
+                        <List.Content floated='right'>
+                            <Modal
+                                open={openModal}
+                                onClose={() => setOpenModal(false)}
+                                trigger={<Button onClick={() => setOpenModal(true)}>Подписаться на сообщения</Button>}
+                            >
+                                <Segment>
+                                    <AddDoublerFormComponent responsible={r}
+                                                             addDoubler={async doubler => {
+                                                                 setOpenModal(false);
+                                                                 await backendApi.addDoubler(id, doubler);
+                                                             }}/>
+                                </Segment>
+                            </Modal>
+                        </List.Content>
+                        <List.Icon name='users'/>
+                        <List.Content>
+                            <List.Header>{r.name}</List.Header>
+                            <List.Description>{r.email}</List.Description>
+                        </List.Content>
+                    </List.Item>);
+                })}
             </List>
             <Pagination totalPages={100} activePage={page} firstItem={null} siblingRange={1}
                         boundaryRange={0}

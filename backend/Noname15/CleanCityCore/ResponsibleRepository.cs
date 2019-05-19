@@ -36,14 +36,24 @@ namespace CleanCityCore
                 // todo(sivukhin, 18.05.2019): Fix data race here
                 var sqlResponsible = context.ResponsibleList.SingleOrDefault(x => x.Id == responsible.Id);
                 if (sqlResponsible != null)
-                    return sqlResponsible.Id;
-                context.ResponsibleList.Add(new ResponsibleSql
                 {
-                    Id = responsible.Id,
-                    Name = responsible.Name,
-                    Email = responsible.Email,
-                    IsActive = responsible.IsActive,
-                });
+                    sqlResponsible.Name = responsible.Name;
+                    sqlResponsible.Email = responsible.Email;
+                    sqlResponsible.ResponseRegion = responsible.ResponseRegion;
+                    context.ResponsibleList.Update(sqlResponsible);
+                }
+                else
+                {
+                    context.ResponsibleList.Add(new ResponsibleSql
+                    {
+                        Id = responsible.Id,
+                        Name = responsible.Name,
+                        Email = responsible.Email,
+                        IsActive = responsible.IsActive,
+                        ResponseRegion = responsible.ResponseRegion,
+                    });
+                }
+
                 context.SaveChanges();
                 return responsible.Id;
             }
@@ -103,6 +113,7 @@ namespace CleanCityCore
                 Name = responsibleSql.Name,
                 Email = responsibleSql.Email,
                 IsActive = responsibleSql.IsActive,
+                ResponseRegion = responsibleSql.ResponseRegion,
             };
         }
     }
