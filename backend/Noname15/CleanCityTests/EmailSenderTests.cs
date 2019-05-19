@@ -12,11 +12,11 @@ namespace CleanCityTests
         {
             var emailSenderRequisites = new EmailSenderRequisites
             {
-                ServerLogin = "postmaster@sandbox04ced59a05e34ccd8a0ebd92846412d8.mailgun.org",
-                ServerEmail = "cleancity96@yandex.ru",
-                ServerPassword = "password",
-                SmtpHost = "smtp.mailgun.org",
-                SmtpPort = 587,
+                ServerLogin = "cleancityekb@gmail.com",
+                ServerEmail = "cleancityekb@gmail.com",
+                ServerPassword = @".L\yW#{^0M#ExONc[p(sP=[#h",
+                SmtpHost = "smtp.gmail.com",
+                SmtpPort = 25,
             };
             var sender = new EmailSender(emailSenderRequisites);
             sender.SendEmail(new EmailMessage

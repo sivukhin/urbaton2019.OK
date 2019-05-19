@@ -15,11 +15,11 @@ namespace EmailSenderDaemon
             var secretManager = new SecretManager();
             var emailSenderRequisites = new EmailSenderRequisites
             {
-                ServerLogin = "postmaster@sandbox04ced59a05e34ccd8a0ebd92846412d8.mailgun.org",
-                ServerEmail = "cleancity96@yandex.ru",
+                ServerLogin = "cleancityekb@gmail.com",
+                ServerEmail = "cleancityekb@gmail.com",
                 ServerPassword = secretManager.GetSecret("password"),
-                SmtpHost = "smtp.mailgun.org",
-                SmtpPort = 587,
+                SmtpHost = "smtp.gmail.com",
+                SmtpPort = 25,
             };
             var responsibleRepository = new ResponsibleRepository();
             var emailRepository = new EmailRepository();

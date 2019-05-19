@@ -204,7 +204,7 @@ namespace CleanCityBot
             });
             var makeReport = new ReplyKeyboardMarkup(new[]
             {
-                new[] {new KeyboardButton("Сформировать обращение")},
+                new[] {new KeyboardButton("Отправить обращение")},
             });
 
             var subject = string.Empty;
@@ -267,7 +267,7 @@ namespace CleanCityBot
             var report = cleanCityApi.GetReport(reportId);
             var responsible = cleanCityApi.GetResponsible(report.ResponsibleId);
             await manager.SendTextMessageAsync(
-                $"Обращение успешно сформировано, мы уведомим соответствующего квартального о проблеме:\n" +
+                $"Обращение успешно сформировано и отправлено соответствующему квартальному: " +
                 $"{responsible.Name}\n" +
                 $"Вы можете оформить ещё одно обращение с помощью команды /report", resetMarkup);
         }
