@@ -55,8 +55,10 @@ namespace CleanCityCore
                 var responsible = context.ResponsibleList.SingleOrDefault(x => x.Id == responsibleId);
                 if (responsible == null)
                     return new Responsible[0];
-                return responsible
-                    .DoublerList
+                var doublers = responsible.DoublerList;
+                if (doublers == null)
+                    return new Responsible[0];
+                return doublers
                     .ToList()
                     .Select(x => new Responsible
                     {
