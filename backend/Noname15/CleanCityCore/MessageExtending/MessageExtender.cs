@@ -39,7 +39,8 @@ namespace CleanCityCore.MessageExtending
                 returnMsg += "</ol>";
             }
 
-            returnMsg += $"<br/>Обращение от {user.Username} (email: {user.Email}):<br/>" + report.ReportText;
+            var userDefined = user == null ? "" : $" от {user.Username} (email: {user.Email})";
+            returnMsg += $"<br/>Обращение{userDefined}:<br/>" + report.ReportText;
             var geolocationLink =
                 $"https://yandex.ru/maps/?ll={report.Location.Longitude}%2C{report.Location.Latitude}&" +
                 $"mode=whatshere&" +

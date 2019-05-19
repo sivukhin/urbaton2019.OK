@@ -4,6 +4,7 @@ using System.Linq;
 using CleanCityCore.EmailSender;
 using CleanCityCore.MessageExtending;
 using CleanCityCore.Model;
+using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 
 namespace CleanCityCore
@@ -83,7 +84,11 @@ namespace CleanCityCore
 
         public Report GetReport(Guid reportId)
         {
-            return reportRepository.ReadReport(reportId);
+            var report = reportRepository.ReadReport(reportId);
+            report.Subject = messageExtender.ExtendSubject(report);
+            var responsible = responsibleRepository.ReadResponsible(report.ResponsibleId);
+            report.ReportText = messageExtender.ExtendReportText(responsible, null, report);
+            return report;
         }
 
         public Guid SendReport(InitialReport report)
