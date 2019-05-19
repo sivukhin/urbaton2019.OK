@@ -152,37 +152,33 @@ function ResponsibleListComponent(props: IApplicationComponentProps) {
 interface IMainPageApplicationComponentProps {
     backendApi: IBackendApi;
     reportId: string;
+    activeItem: string;
 }
 
 export function MainPageApplicationComponent(props: IMainPageApplicationComponentProps) {
-    const {reportId} = props;
-    const [activeItem, setActiveItem] = useState(reportId == null ? "reports" : "report");
-    useEffect(() => {
-        if (reportId != null) {
-            setActiveItem("report");
-        }
-    }, [reportId]);
+    const {reportId, activeItem} = props;
     return (
         <Segment>
             <Menu>
                 <Menu.Item
                     name='reports'
                     active={activeItem === 'reports'}
-                    onClick={() => setActiveItem("reports")}
+                    as={Link}
+                    to={"/reports"}
                 >
                     Список обращений
                 </Menu.Item>
                 <Menu.Item
                     name='responsibles'
                     active={activeItem === 'responsibles'}
-                    onClick={() => setActiveItem("responsibles")}
+                    as={Link}
+                    to={"/responsibles"}
                 >
                     Список квартальных города Екатеринбург
                 </Menu.Item>
                 {reportId != null && <Menu.Item
                     name='report'
                     active={activeItem === 'report'}
-                    onClick={() => setActiveItem("report")}
                 >
                     Обращение
                 </Menu.Item>}
@@ -268,10 +264,19 @@ function ApplicationComponentInternal(props: IApplicationComponentProps) {
                     <Router>
                         <Switch>
                             <Route path="/" exact
-                                   render={_ => <MainPageApplicationComponent {...props} reportId={null}/>}/>
+                                   render={_ => <MainPageApplicationComponent {...props} reportId={null}
+                                                                              activeItem={"reports"}/>}/>
+                            <Route path="/reports"
+                                   render={_ => <MainPageApplicationComponent {...props} reportId={null}
+                                                                              activeItem={"reports"}/>}/>
+                            <Route path="/responsibles"
+                                   render={_ => <MainPageApplicationComponent {...props} reportId={null}
+                                                                              activeItem={"responsibles"}/>}/>
                             <Route path="/report/:reportId"
-                                   render={routerProps => <MainPageApplicationComponent {...props}
-                                                                                        reportId={routerProps.match.params.reportId}/>}/>
+                                   render={routerProps =>
+                                       <MainPageApplicationComponent {...props}
+                                                                     activeItem={"report"}
+                                                                     reportId={routerProps.match.params.reportId}/>}/>
                         </Switch>
                     </Router>
                 </Segment>
