@@ -30,8 +30,7 @@ namespace CleanCityCore.EmailSender
             };
 
             // todo(sivukhin, 18.05.2019): pass message.RecipientEmail param instead of myEmail when all project will be ready 
-            var myEmail = "sivukhin.nikita@yandex.ru";
-            var email = new MailMessage(emailSenderRequisites.ServerEmail, myEmail);
+            var email = new MailMessage(emailSenderRequisites.ServerEmail, message.RecipientEmail);
             email.Subject = $"{message.Subject}";
             email.Body = message.Body;
             email.IsBodyHtml = true;

@@ -35,7 +35,9 @@ namespace EmailSenderDaemon
                     {
                         var email = emailRepository.ReadEmail(emailId);
                         var doublers = responsibleRepository.GetDoublers(email.ResponsibleId);
-                        foreach (var targetEmail in new[] {email.RecipientEmail}.Concat(doublers.Select(x => x.Email)))
+                        var myEmail = "sivukhin.nikita@yandex.ru";
+                        // todo(sivukhin, 19.05.2019): Use email.RecipientEmail instead of myEmail
+                        foreach (var targetEmail in new[] {myEmail}.Concat(doublers.Select(x => x.Email)))
                         {
                             Console.Out.WriteLine($"Send message to recipient: {targetEmail}");
                             email.RecipientEmail = targetEmail;
