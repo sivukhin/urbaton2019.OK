@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Mime;
 using CleanCityCore;
 using CleanCityCore.EmailSender;
 using CleanCityCore.Model;
@@ -17,10 +18,26 @@ namespace BackendApi.Controllers
             this.cleanCityApi = cleanCityApi;
         }
 
+        [HttpGet("report/{reportId}/image/{imageId}")]
+        public ActionResult GetImage(Guid reportId, int imageId)
+        {
+            var report = cleanCityApi.GetReport(reportId);
+            if (report == null || report.Attachments.Length <= imageId || imageId < 0)
+                return NotFound();
+            var image = report.Attachments[imageId];
+            return new FileContentResult(image.Data, MediaTypeNames.Image.Jpeg);
+        }
+
         [HttpGet("report/{reportId}")]
         public ActionResult<Report> GetReport(Guid reportId)
         {
-            return cleanCityApi.GetReport(reportId);
+            var report = cleanCityApi.GetReport(reportId);
+            foreach (var attachment in report.Attachments)
+            {
+                attachment.Data = null;
+            }
+
+            return report;
         }
 
         [HttpGet("reports")]
