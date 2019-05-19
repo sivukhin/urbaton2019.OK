@@ -12,6 +12,36 @@ namespace CleanCityCore.MessageExtending
             return $"Заявка общественному квартальному: {report.Subject}";
         }
 
+        public string ExtendReportText(Report report)
+        {
+            List<ElementMessageDeny> elemets = ElementMessagesBuilder.BuildList();
+            List<string> returnDeny = new List<string>();
+
+            var returnMsg = "";
+
+            foreach (var item in elemets)
+            {
+                Regex regex = new Regex(item.Keywords);
+                MatchCollection matches = regex.Matches(report.ReportText);
+                if (matches.Count > 0) returnDeny.Add(item.Base);
+            }
+
+            if (returnDeny.Count > 0)
+            {
+                returnMsg +=
+                    "На основании пункта 7 РЕШЕНИЯ от 26 июня 2012 года N 29/61 \"Об утверждении правил благоустройства территории муниципального образования город Екатеринбург\" на территории муниципального образования город Екатеринбург запрещается:\n\n";
+                var id = 1;
+                foreach (var item in returnDeny)
+                {
+                    returnMsg += $"{id}. {item}\n";
+                    id += 1;
+                }
+            }
+
+            returnMsg += $"Обращение:\n" + report.ReportText;
+            return returnMsg;
+        }
+
         public String ExtendReportText(Responsible responsible, User user, Report report)
         {
             List<ElementMessageDeny> elemets = ElementMessagesBuilder.BuildList();

@@ -86,8 +86,7 @@ namespace CleanCityCore
         {
             var report = reportRepository.ReadReport(reportId);
             report.Subject = messageExtender.ExtendSubject(report);
-            var responsible = responsibleRepository.ReadResponsible(report.ResponsibleId);
-            report.ReportText = messageExtender.ExtendReportText(responsible, null, report);
+            report.ReportText = messageExtender.ExtendReportText(report);
             return report;
         }
 
