@@ -244,7 +244,7 @@ namespace CleanCityBot
                     Pluralizator.Pluralize(attachments.Count, "фотографий", "фотографию", "фотографии");
                 await manager.SendTextMessageAsync(
                     $"Добавьте к своему обращению фотографии, чтобы оно было быстрее решено\n" +
-                    $"Мы уже прикрепили к вашему обращению {count} {caption}. Вы можете отправить ещё фотографии или сформировать обращени",
+                    $"Мы уже прикрепили к вашему обращению {count} {caption}. Вы можете отправить ещё фотографии или сформировать обращение",
                     makeReport);
                 var message = await GetResponseAsync(attachments);
                 if (message.Text != null && message.Text.Contains("обращение"))
