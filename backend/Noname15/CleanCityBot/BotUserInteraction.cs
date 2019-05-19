@@ -107,7 +107,7 @@ namespace CleanCityBot
                 if (response == "/done")
                 {
                     cleanCityApi.AddOrUpdateUser(user);
-                    await manager.SendTextMessageAsync("Данные успешно сохранены");
+                    await manager.SendTextMessageAsync($"Данные успешно сохранены\n{UserHelp}");
                     break;
                 }
                 else if (response == "/change_name")
@@ -170,7 +170,7 @@ namespace CleanCityBot
                                                "Если хотите исправить email, воспользуйтесь командой /change_email\n" +
                                                "Если хотите исправить адрес, воспользуйтесь командой /change_address";
 
-        private string UserHelp => "Бот общественный квартальный.\n" +
+        private string UserHelp => "Бот \"Общественный Квартальный\".\n" +
                                    "Сперва вам нужно пройти процесс регистрации с помощью команды /register\n" +
                                    "После этого вы сможете создавать обращения квартальным города Екатеринбург с помощью команды /report\n" +
                                    "Для отмены воспользуйтесь командой /cancel";
@@ -245,8 +245,8 @@ namespace CleanCityBot
                 var (count, caption) =
                     Pluralizator.Pluralize(attachments.Count, "фотографий", "фотографию", "фотографии");
                 await manager.SendTextMessageAsync(
-                    $"Добавьте к своему обращению фотографии, чтобы оно было быстрее решено\n" +
-                    $"Мы уже прикрепили к вашему обращению {count} {caption}. Вы можете отправить ещё фотографии или сформировать обращение",
+                    $"Добавьте к своему обращению фотографии, чтобы зафиксировать нарушение\n" +
+                    $"Мы уже прикрепили к вашему обращению {count} {caption}. Вы можете отправить ещё фотографии или отправить обращение",
                     makeReport);
                 var message = await GetResponseAsync(attachments);
                 if (message.Text != null && message.Text.Contains("обращение"))
