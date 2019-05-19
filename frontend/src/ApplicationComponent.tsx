@@ -13,7 +13,8 @@ import {
     Modal,
     Form,
     Header,
-    Image
+    Image,
+    Pagination
 } from 'semantic-ui-react'
 import {IResponsible} from "./IResponsible";
 import {withRouter} from "react-router";
@@ -81,35 +82,58 @@ function AddDoublerFormComponent(props: IAddDoublerFormComponentProps) {
 
 function ResponsibleListComponent(props: IApplicationComponentProps) {
     const [responsibles, setResponsibles] = useState([]);
+    const [page, setPage] = useState(1);
+    const [openModal, setOpenModal] = useState(false);
     useEffect(() => {
         async function loadAsync() {
             const {backendApi} = props;
-            const responsibles = await backendApi.getResponsibles(0, 10);
+            const responsibles = await backendApi.getResponsibles((page - 1) * 10, 10);
+            if (responsibles.length == 0) {
+                setPage(page - 1);
+                return;
+            }
             setResponsibles(responsibles);
         }
 
         loadAsync();
-    }, []);
+    }, [page]);
     const {backendApi} = props;
-    return (<List divided>
-        {responsibles.map(r => <List.Item key={r.id}>
-            <List.Content floated='right'>
-                <Modal
-                    trigger={<Button>Подписаться на сообщения</Button>}
-                >
-                    <Segment>
-                        <AddDoublerFormComponent responsible={r}
-                                                 addDoubler={doubler => backendApi.addDoubler(r.id, doubler)}/>
-                    </Segment>
-                </Modal>
-            </List.Content>
-            <List.Icon name='users'/>
-            <List.Content>
-                <List.Header>{r.name}</List.Header>
-                <List.Description>{r.email}</List.Description>
-            </List.Content>
-        </List.Item>)}
-    </List>);
+    return (
+        <>
+            <List divided>
+                {responsibles.map(r => <List.Item key={r.id}>
+                    <List.Content floated='right'>
+                        <Modal
+                            open={openModal}
+                            onClose={() => setOpenModal(false)}
+                            trigger={<Button onClick={() => setOpenModal(true)}>Подписаться на сообщения</Button>}
+                        >
+                            <Segment>
+                                <AddDoublerFormComponent responsible={r}
+                                                         addDoubler={async doubler => {
+                                                             setOpenModal(false);
+                                                             await backendApi.addDoubler(r.id, doubler);
+                                                         }}/>
+                            </Segment>
+                        </Modal>
+                    </List.Content>
+                    <List.Icon name='users'/>
+                    <List.Content>
+                        <List.Header>{r.name}</List.Header>
+                        <List.Description>{r.email}</List.Description>
+                    </List.Content>
+                </List.Item>)}
+            </List>
+            <Pagination totalPages={100} activePage={page} firstItem={null} siblingRange={1}
+                        boundaryRange={0}
+                        lastItem={null} onPageChange={(e, data) => {
+                if (page < data.activePage && responsibles.length < 10) {
+                    return;
+                }
+                // @ts-ignore
+                setPage(data.activePage)
+            }}/>
+        </>);
 }
 
 interface IMainPageApplicationComponentProps {
@@ -180,7 +204,8 @@ function RenderAttachments(attachments: any[], reportId: string, backendApi: IBa
     </>);
 }
 
-function RenderReport(reportId: string, report: IReport, responsible: IResponsible, backendApi: IBackendApi) {
+function RenderReport(reportId: string, report: IReport, responsible: IResponsible, backendApi:
+    IBackendApi) {
     return (
         <Container textAlign="left" fluid>
             <Header as='h2'>{report.subject}</Header>
@@ -218,12 +243,7 @@ function ReportComponent(props: IReportComponentProps) {
         loadAsync();
     }, [reportId]);
     return (
-        <>
-            <Dimmer active={report == null} inverted>
-                <Loader/>
-            </Dimmer>
-            {report != null && responsible != null && RenderReport(reportId, report, responsible, backendApi)}
-        </>
+        report != null && responsible != null && RenderReport(reportId, report, responsible, backendApi)
     );
 }
 

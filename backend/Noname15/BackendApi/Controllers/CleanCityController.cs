@@ -70,7 +70,13 @@ namespace BackendApi.Controllers
             var responsibleId = query.ResponsibleId;
             var doubler = query.Doubler;
             Console.WriteLine($"Adding doubler for {responsibleId}: info ({doubler.Email}, {doubler.Name})");
-            cleanCityApi.AddDoubler(responsibleId, doubler);
+            cleanCityApi.AddDoubler(responsibleId, new Responsible
+            {
+                Id = Guid.NewGuid(),
+                Name = doubler.Name,
+                Email = doubler.Email,
+                IsActive = true,
+            });
         }
     }
 }
