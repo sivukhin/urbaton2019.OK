@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using CleanCityCore.Model;
@@ -82,6 +83,8 @@ namespace CleanCityCore
                     Email = doubler.Email,
                     OriginalResponsible = responsible
                 };
+                if (responsible.DoublerList == null)
+                    responsible.DoublerList = new List<ResponsibleDoublerSql>();
                 responsible.DoublerList.Add(sqlDoubler);
                 context.SaveChanges();
             }

@@ -42,8 +42,11 @@ namespace BackendApi.Controllers
         }
 
         [HttpPost("add-doubler")]
-        public void AddDoubler(Guid responsibleId, Responsible doubler)
+        public void AddDoubler(AddDoublerQuery query)
         {
+            var responsibleId = query.ResponsibleId;
+            var doubler = query.Doubler;
+            Console.WriteLine($"Adding doubler for {responsibleId}: info ({doubler.Email}, {doubler.Name})");
             cleanCityApi.AddDoubler(responsibleId, doubler);
         }
     }
