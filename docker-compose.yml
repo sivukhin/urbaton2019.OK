@@ -52,3 +52,9 @@ services:
             dockerfile: Dockerfile.db
         depends_on:
             - db
+    front-end:
+        build: frontend/
+        depends_on:
+            - backend-api
+        ports:
+            - "80:80"
